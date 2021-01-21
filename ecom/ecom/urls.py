@@ -16,13 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from apps.cart.views import cart
+from apps.cart.views import cart_detail
 from apps.core.views import frontpage, contact, about
 from apps.store.views import product_detail, category_detail
 
 urlpatterns = [
     path('', frontpage, name='frontpage'),
-    path('cart/', cart, name='cart'),
+    path('cart/', cart_detail, name='cart'),
     path('contact/', contact, name='contact'),
     path('about/', about, name='about'),
     path('admin/', admin.site.urls),
