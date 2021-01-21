@@ -1,8 +1,64 @@
 {% extends 'base.html' %}
 
 {% block title %}Cart | {% endblock title %}
-
-{% block content %}
-    <h1 class="title"> Cart</h1>
     
+{% block content %}
+    <div id="cartapp">
+        <h1 class="title"> Cart</h1>
+        
+        {% if cart %}
+            {% for item in cart %}
+                {% with product=item.product %}
+                    <p>{{ product.title }}</p>
+                    <button @click="removeFromCart({{ product.id }})">Remove</button>
+                {% endwith %}
+            {% endfor %}
+        {% else %}  
+            <p>Your cart is empty!</p>
+        {% endif %}
+    </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    var productapp = new Vue({
+        el: '#cartapp',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+
+            }
+        },
+        mounted() {
+            console.log('mounted')
+        },
+        methods: {
+            removeFromCart(product_id) {
+                console.log(product_id)
+
+                var data = {'product_id': product_id}
+
+                fetch('/api/remove_from_cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    // if (response.error) {
+                    //     console.log('Error ', response.error)
+                    //     throw response;
+                    // }
+                    console.log('Removed from cart')
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}
