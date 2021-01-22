@@ -22,7 +22,7 @@ class Cart(object):
             self.cart[str(p)]['product'] = Product.objects.get(pk=p)
         
         for item in self.cart.values():
-            item['total_price'] = int(item['price']) * int(item['quantity'])
+            item['total_price'] = float(item['price']) * int(item['quantity'])
             yield item
 
     def __len__(self):
@@ -52,3 +52,9 @@ class Cart(object):
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
+
+    def get_total_length(self):
+        return sum(int(item['quantity']) for item in self.cart.values())
+
+    def get_total_cost(self):
+        return sum(float(item['total_price']) for item in self.cart.values())

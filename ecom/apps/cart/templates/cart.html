@@ -7,12 +7,36 @@
         <h1 class="title"> Cart</h1>
         
         {% if cart %}
-            {% for item in cart %}
-                {% with product=item.product %}
-                    <p>{{ product.title }}</p>
-                    <button @click="removeFromCart({{ product.id }})">Remove</button>
-                {% endwith %}
-            {% endfor %}
+            <div class="table">
+                <table class="table">
+                    <thead>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="product in products">
+                            <td>[[ product.title ]]</td>
+                            <td>[[ product.quantity ]]
+                                <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button>
+                                <button @click="decrementQuantity(product.id, product.quantity, product.price)">-</button>
+                            </td>
+                            <td>[[ product.total_price ]]</td>
+                            <td><button @click="removeFromCart(product.id)">Remove</button></td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td>Total: </td>
+                            <td>[[ numItems ]]</td>
+                            <td></td>
+                            <td>[[ totalCost ]]</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         {% else %}  
             <p>Your cart is empty!</p>
         {% endif %}
@@ -24,15 +48,86 @@
     var productapp = new Vue({
         el: '#cartapp',
         delimiters: ['[[', ']]'],
+        store: store,
         data () {
             return {
-
+                products: [{{ productsstring|safe }}]
             }
         },
-        mounted() {
-            console.log('mounted')
+        computed: {
+            numItems: function() { return store.state.numItems},
+            totalCost: function() { return store.state.totalCost }
         },
         methods: {
+            // TODO: allakse to an xreiastei se update quantity
+            incrementQuantity(product_id, quantity, price) {
+                var data = {
+                    'product_id': product_id, 
+                    'update_quantity': true,
+                    'quantity': parseInt(quantity) + 1
+                }
+
+                store.commit('increment', 1)
+                store.commit('changeTotalCost', parseFloat(price))
+
+                fetch('/api/add_to_cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log('Quantity updated')
+                    for (var i=0; i<this.products.length; i++) {
+                        var product = this.products[i];
+
+                        if (product.id === product_id) {
+                            this.products[i].quantity = parseInt(this.products[i].quantity) + 1;
+                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
+            },
+            decrementQuantity(product_id, quantity, price) {
+                var data = {
+                    'product_id': product_id, 
+                    'update_quantity': true,
+                    'quantity': parseInt(quantity) - 1
+                }
+
+                store.commit('increment', -1)
+                store.commit('changeTotalCost', parseFloat(price))
+
+                fetch('/api/add_to_cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log('Quantity updated')
+                    for (var i=0; i<this.products.length; i++) {
+                        var product = this.products[i];
+
+                        if (product.id === product_id) {
+                            this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
+                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
+            },
             removeFromCart(product_id) {
                 console.log(product_id)
 
@@ -48,11 +143,8 @@
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
-                    // if (response.error) {
-                    //     console.log('Error ', response.error)
-                    //     throw response;
-                    // }
                     console.log('Removed from cart')
+                    this.products = this.products.filter(product => product.id !== product_id)
                 })
                 .catch((error) => {
                     console.log('Error ', error )

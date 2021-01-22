@@ -4,6 +4,8 @@
 
 {% block content %}
     <div id="productapp">
+        <img src="/{{ product.image }}" alt="">
+        <hr>
         <h1 class="title">{{ product.title }}</h1>
         <h2 class="subtitle">€{{ product.price }}</h2>
 
@@ -20,14 +22,8 @@
     var productapp = new Vue({
         el: '#productapp',
         delimiters: ['[[', ']]'],
-        data () {
-            return {
-
-            }
-        },
-        mounted() {
-            console.log('mounted')
-        },
+        // TODO: Uncaught ReferenceError: store is not defined
+        // store: store,
         methods: {
             addToCart(product_id) {
                 console.log(product_id)
@@ -48,11 +44,8 @@
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
-                    // if (response.error) {
-                    //     console.log('Error ', response.error)
-                    //     throw response;
-                    // }
                     console.log('Added to cart')
+                    // store.commit('increment', 1)
                 })
                 .catch((error) => {
                     console.log('Error ', error )
