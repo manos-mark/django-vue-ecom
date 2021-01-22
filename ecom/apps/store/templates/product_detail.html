@@ -22,8 +22,7 @@
     var productapp = new Vue({
         el: '#productapp',
         delimiters: ['[[', ']]'],
-        // TODO: Uncaught ReferenceError: store is not defined
-        // store: store,
+        store: store,
         methods: {
             addToCart(product_id) {
                 console.log(product_id)
@@ -45,7 +44,7 @@
                 })
                 .then((response) => {
                     console.log('Added to cart')
-                    // store.commit('increment', 1)
+                    store.commit('increment', 1)
                 })
                 .catch((error) => {
                     console.log('Error ', error )
