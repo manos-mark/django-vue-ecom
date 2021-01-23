@@ -53,3 +53,23 @@ class Product(models.Model):
     def get_absolute_url(self):
         return '/%s/%s/' % (self.category.slug, self.slug)
     
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert('RGB')
+        img.thumbnail(size)
+        
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'JPEG', quality=85)
+
+        thumbnail = File(thumb_io, name=image.name)
+        return thumbnail
+
+    def save(self, *args, **kwargs):
+        self.thumbnail = self.make_thumbnail(self.image)
+        super().save(*args, **kwargs)
