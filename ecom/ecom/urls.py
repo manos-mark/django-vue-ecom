@@ -13,27 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django import contrib
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static 
+from django.contrib.sitemaps.views import sitemap
 
 from apps.cart.webhook import webhook
 from apps.cart.views import cart_detail, success
 from apps.core.views import frontpage, contact, about
-from apps.store.views import product_detail, category_detail
+from apps.store.views import product_detail, category_detail, search
 
 from apps.store.api import api_add_to_cart, api_remove_from_cart, api_create_checkout_session
 from apps.coupon.api import api_can_use
 
+from .sitemaps import StaticViewSitemap, CategorySitemap, ProductSitemap
+
+sitemaps = {'static': StaticViewSitemap, 'product': ProductSitemap, 'category': CategorySitemap}
+
 urlpatterns = [
     path('', frontpage, name='frontpage'),
+    path('search/', search, name='search'),
     path('cart/', cart_detail, name='cart'),
     path('hooks/', webhook, name='webhook'),
     path('cart/success/', success, name='success'),
     path('contact/', contact, name='contact'),
     path('about/', about, name='about'),
     path('admin/', admin.site.urls),
+
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name="django.contrib.views.sitemap"),
 
     #API
     path('api/can_use/', api_can_use, name='api_can_use'),
