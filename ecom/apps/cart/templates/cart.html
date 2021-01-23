@@ -34,10 +34,22 @@
                             <td></td>
                             <td>[[ totalCost ]]</td>
                         </tr>
+                        <tr v-if="coupon_value">
+                            <td colspan=3>Total cost with coupon: </td>
+                            <td> [[ totalCostWithCoupon ]] </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
 
+            <div class=" column is-4">
+                    <input type="hidden" class="input" type="text" v-model="coupon_value"><br>
+                    Coupon code:<br>
+                    <input class="input" type="text" v-model="coupon_code"><br>
+                    <button @click="applyCoupon()">Apply</button>
+                    <hr>
+                </div>
+                
             <form v-on:submit.prevent>
                 <div class="field column is-4">
                     <div class="control">
@@ -83,9 +95,7 @@
             </form>
         </div>
         <p v-else="">Your cart is empty!</p>
-        {% comment %} <div v-if="errors.length > 0" v-for="error in errors"> {% endcomment %}
         <div v-if="errors.length > 0" class="notification is-danger is-light">Please fill in all the reruired fields!</div>
-        {% comment %} </div> {% endcomment %}
     </div>
 {% endblock content %}
 
@@ -105,22 +115,50 @@
                 address: '',
                 zipcode: '',
                 place: '',
-                products: [{{ productsstring|safe }}]
+                products: [{{ productsstring|safe }}],
+                coupon_value: 0,
+                coupon_code: '',
             }
         },
         computed: {
             numItems: function() { return store.state.numItems},
-            totalCost: function() { return store.state.totalCost }
+            totalCost: function() { return store.state.totalCost },
+            totalCostWithCoupon: function() {
+                if (this.coupon_value > 0) {
+                    return store.state.totalCost * (parseInt(this.coupon_value) / 100)
+                } else {
+                    return store.state.totalCost
+                }
+            }
         },
         methods: {
+            applyCoupon() {
+                if (this.coupon_code != '') {
+                    fetch('/api/can_use/?coupon_code=' + this.coupon_code, {
+                        method: 'GET'
+                    })
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((data) => {
+                        console.log(data)
+                        if (data.amount) {
+                            this.coupon_value = parseInt(data.amount)
+                        } else {
+                            this.coupon_value = 0
+                        }
+                    })
+                }
+            },
             buy() {
                 var data = {
-                    first_name: this.first_name,
-                    last_name: this.last_name,
-                    email: this.email,
-                    address: this.address,
-                    zipcode: this.zipcode,
-                    place: this.place,
+                    'first_name': this.first_name,
+                    'last_name': this.last_name,
+                    'email': this.email,
+                    'address': this.address,
+                    'zipcode': this.zipcode,
+                    'place': this.place,
+                    'coupon_code': this.coupon_code,
                 };
 
                 this.errors = [];
@@ -157,33 +195,6 @@
                     if (result.error) {
                         alert(result.error.message)
                     }
-                })
-                .catch((error) => {
-                    console.log('Error ', error )
-                })
-            },
-            submitForm() {
-                var data = {
-                    first_name: this.first_name,
-                    last_name: this.last_name,
-                    email: this.email,
-                    address: this.address,
-                    zipcode: this.zipcode,
-                    place: this.place,
-                };
-                
-                fetch('/api/checkout/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    console.log("SUCESS")
-                    window.location.href = '/'
                 })
                 .catch((error) => {
                     console.log('Error ', error )
