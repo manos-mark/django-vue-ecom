@@ -23,8 +23,8 @@ class Product(models.Model):
     price = models.FloatField()
     is_featured = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='media/uploads/', blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='media/uploads/', blank=True, null=True)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
     class Meta:
         ordering = ('-date_added',)
