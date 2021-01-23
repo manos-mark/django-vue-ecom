@@ -8,7 +8,7 @@ from apps.order.models import Order, OrderItem
 def checkout(request, first_name, last_name, email, address, zipcode, place):
     order = Order(first_name=first_name, last_name=last_name, \
         email=email, address=address, zipcode=zipcode, place=place)
-    print("TEST 1")
+    
     order.save()
 
     cart = Cart(request)

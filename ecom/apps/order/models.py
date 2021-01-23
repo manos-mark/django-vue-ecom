@@ -13,8 +13,10 @@ class Order(models.Model):
     paid = models.BooleanField(default=False)
     paid_amount = models.FloatField(blank=True, null=True)
 
+    payment_intent = models.CharField(max_length=255)
+
     def __str__(self):
-        return '%s' % self.first_name
+        return '%s %s %s' % (self.first_name, self.last_name, self.created_at)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)

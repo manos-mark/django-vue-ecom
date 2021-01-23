@@ -65,9 +65,15 @@
                     increment(state, quantity) {
                         state.numItems += quantity;
                     },
-                    changeTotalCost(state, newCost) {
+                    decrement(state, quantity) {
+                        state.numItems -= quantity;
+                    },
+                    incrementTotalCost(state, newCost) {
                         state.totalCost += newCost;
-                    }
+                    },
+                    decrementTotalCost(state, newCost) {
+                        state.totalCost -= newCost;
+                    },
                 }
             });
             var navbarapp = new Vue({

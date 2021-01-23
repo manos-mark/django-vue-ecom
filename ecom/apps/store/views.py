@@ -4,7 +4,7 @@ from .models import Product, Category
 
 def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
-
+    
     context = {
         'product': product
     }
