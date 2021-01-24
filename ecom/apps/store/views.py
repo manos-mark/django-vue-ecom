@@ -3,6 +3,8 @@ from django.db.models import Q
 
 from .models import Product, Category
 
+from apps.cart.cart import Cart
+
 def search(request):
     query = request.GET.get('query')
     products = Product.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
@@ -20,6 +22,12 @@ def product_detail(request, category_slug, slug):
     
     for image in product.images.all():
         imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.thumbnail.url, image.image.url))
+
+    cart = Cart(request)
+    if cart.has_product(product.id):
+        product.in_cart = True
+    else:
+        product.in_cart = False
 
     context = {
         'product': product,

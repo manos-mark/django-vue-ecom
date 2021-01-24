@@ -21,7 +21,16 @@
             <p>{{ product.description }}</p>
         {% endif %}
 
-        <button @click="addToCart({{ product.id }})">Add to cart</button>
+        {% if product.in_cart %}
+            <p>Already in cart!</p>
+        {% else %}
+            {% if product.num_available > 0 %}
+            <button @click="addToCart({{ product.id }})">Add to cart</button>
+            {% else %}
+            <p>The product is out of stock!</p>
+            {% endif %}
+        {% endif %}
+
         <article class="message is-success" v-if="showMessage">
             <div class="message-body">
                 The product was added to the cart!

@@ -28,6 +28,7 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    num_available = models.IntegerField(default=1)
 
     class Meta:
         ordering = ('-date_added',)

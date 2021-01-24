@@ -11,9 +11,9 @@ def cart_detail(request):
         product = item['product']
         url = '/%s/%s/' % (product.category.slug, product.slug)
         b = "{'id': '%s', 'title': '%s', 'price': '%s', 'quantity': '%s', \
-            'total_price': '%s', 'thumbnail': '%s', 'url': '%s'}," \
+            'total_price': '%s', 'thumbnail': '%s', 'url': '%s', 'num_available': '%s'}," \
             %(product.id, product.title, product.price, item['quantity'], \
-            item['total_price'], product.thumbnail.url, url)
+            item['total_price'], product.thumbnail.url, url, product.num_available)
         productsstring += b
 
     context = {

@@ -206,6 +206,23 @@
             },
             // TODO: allakse to an xreiastei se update quantity
             incrementQuantity(product_id, quantity, price) {
+                isProductAvailable = false
+
+                for (var i=0; i<this.products.length; i++) {
+                    var product = this.products[i]
+
+                    if (product.id === product_id) {
+                        if (quantity < product.num_available) {
+                            isProductAvailable = true
+                        }
+                    }
+                }
+                
+                if (!isProductAvailable) {
+                    alert('No more available in stock')
+                    return
+                }
+
                 var data = {
                     'product_id': product_id, 
                     'update_quantity': true,
