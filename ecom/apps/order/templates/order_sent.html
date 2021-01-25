@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" contet="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Ecom</title>
+        <style type="text/css">
+            html {
+                width: 100%;
+                -webkit-text-size-adjust: 100%;
+                -webkit-background-size: 100%;
+            }
+
+            body {
+                width: 100%;
+                font-family: arial;
+                font-size: 14px;
+                background-color: #fff;
+                color: #333;
+            }
+
+            a {
+                color: 111;
+            }
+        </style>
+    </head>
+    <body>
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>
+                    <center>
+                        <h1>Order sent</h1>
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Your order has been sent!</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for item in order.items.all %}
+                    <p>
+                        <strong>{{ item.product.title }}</strong>
+                        - Quantity: {{ item.quantity }}
+                        - Price: €{{ item.product.price }}
+                    </p>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

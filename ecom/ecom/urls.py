@@ -19,7 +19,9 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static 
 from django.contrib.sitemaps.views import sitemap
+from django.contrib.auth import views
 
+from apps.userprofile.views import signup, myaccount
 from apps.cart.webhook import webhook
 from apps.cart.views import cart_detail, success
 from apps.core.views import frontpage, contact, about
@@ -43,6 +45,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name="django.contrib.views.sitemap"),
+
+    # AUTH
+    path('signup/', signup, name='signup'),
+    path('login/', views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('myaccount/', myaccount, name='myaccount'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 
     #API
     path('api/can_use/', api_can_use, name='api_can_use'),

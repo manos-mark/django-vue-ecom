@@ -25,6 +25,7 @@
             <p>Already in cart!</p>
         {% else %}
             {% if product.num_available > 0 %}
+            <!-- TODO: check if the product is availabe -->
             <button @click="addToCart({{ product.id }})">Add to cart</button>
             {% else %}
             <p>The product is out of stock!</p>
