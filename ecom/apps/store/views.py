@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 
 from .models import Product, Category
@@ -17,6 +17,9 @@ def search(request):
 
 def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
+
+    if product.parent:
+        return redirect('product_detail', category_slug=category_slug, slug=product.parent.slug)
 
     imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.thumbnail.url, product.image.url)
     
@@ -39,7 +42,7 @@ def product_detail(request, category_slug, slug):
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
 
-    products = category.products.all()
+    products = category.products.filter(parent=None)
 
     context = {
         'category': category,

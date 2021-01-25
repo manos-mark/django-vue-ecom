@@ -10,11 +10,13 @@
         {% for product in products %}
         <div class="column is-3">
             <div class="card">
-                {% comment %} <div class="card-image">
+                <div class="card-image">
                     <figure class="image">
-                        <img src="{{ product.thumbnail.url }}">
+                        {% if product.thumbnail.url %}
+                            <img src="{{ product.thumbnail.url }}">
+                        {% endif %}
                     </figure>
-                </div> {% endcomment %}
+                </div>
                 <div class="card-content">
                     <div class="media">
                         <div class='media-content'>
