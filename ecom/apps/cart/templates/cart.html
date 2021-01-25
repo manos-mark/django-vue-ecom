@@ -8,7 +8,7 @@
         
         <div v-if="products.length > 0">
             <div class="table">
-                <table class="table">
+                <table class="table is-fullwidth is-striped">
                     <thead>
                         <th></th>
                         <th>Product</th>
@@ -22,12 +22,13 @@
                                 <figure class="image is-48x48"><img :src="product.thumbnail"></figure>
                             </td>
                             <td><a :href="product.url">[[ product.title ]]</a></td>
-                            <td>[[ product.quantity ]]
-                                <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button>
+                            <td>
                                 <button @click="decrementQuantity(product.id, product.quantity, product.price)">-</button>
+                                [[ product.quantity ]]
+                                <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button>
                             </td>
                             <td>[[ product.total_price ]]</td>
-                            <td><button @click="removeFromCart(product.id)">Remove</button></td>
+                            <td><button @click="removeFromCart(product.id)" class="button is-danger">Remove</button></td>
                         </tr>
                     </tbody>
 
@@ -37,6 +38,7 @@
                             <td>[[ numItems ]]</td>
                             <td></td>
                             <td>[[ totalCost ]]</td>
+                            <td></td>
                         </tr>
                         <tr v-if="coupon_value">
                             <td colspan=3>Total cost with coupon: </td>
@@ -46,12 +48,21 @@
                 </table>
             </div>
 
-            <div class=" column is-4">
-                <input type="hidden" class="input" type="text" v-model="coupon_value"><br>
-                Coupon code:<br>
-                <input class="input" type="text" v-model="coupon_code"><br>
-                <button @click="applyCoupon()">Apply</button>
+            <hr>
+            <h2 class="subtitle">Coupon code</h2>
+            <input type="hidden" class="input" type="text" v-model="coupon_value">
+
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input" type="text" v-model="coupon_code">
+                </div>
+                <div class="control">
+                    <button @click="applyCoupon()" class="button is-success">Apply</button>
+                </div>
                 <hr>
+            </div>
+            <div class="notification is-warning" v-if="showCouponCodeError">
+                <p>The coupon code is not valid</p>
             </div>
 
             {% if not request.user.is_authenticated %}
@@ -62,41 +73,49 @@
                 <hr>
             {% endif %} 
 
+            <hr>
             <form v-on:submit.prevent>
-                <div class="field column is-4">
-                    <div class="control">
+                <h2 class="title">Contact information</h2>
+                <div class="columns">
+                    <div class="field column is-6">
                         <label>First name</label>
-                        <input type="text" name="first_name" v-model="first_name" class="input" v-bind:class="{ 'is-danger' : errors.includes('first_name') }">
+                        <div class="control">
+                            <input type="text" name="first_name" v-model="first_name" class="input" v-bind:class="{ 'is-danger' : errors.includes('first_name') }">
+                        </div>
                     </div>
-                </div>
-                <div class="field column is-4">
-                    <div class="control">
+                    <div class="field column is-6">
                         <label>Last name</label>
-                        <input type="text" name="last_name" v-model="last_name" class="input" v-bind:class="{ 'is-danger' : errors.includes('last_name') }">
+                        <div class="control">
+                            <input type="text" name="last_name" v-model="last_name" class="input" v-bind:class="{ 'is-danger' : errors.includes('last_name') }">
+                        </div>
                     </div>
                 </div>
-                <div class="field column is-4">
-                    <div class="control">
+                <div class="columns">
+                    <div class="field column is-6">
                         <label>Email</label>
-                        <input type="text" name="email" v-model="email" class="input" v-bind:class="{ 'is-danger' : errors.includes('email') }">
+                        <div class="control">
+                            <input type="text" name="email" v-model="email" class="input" v-bind:class="{ 'is-danger' : errors.includes('email') }">
+                        </div>
                     </div>
-                </div>
-                <div class="field column is-4">
-                    <div class="control">
+                    <div class="field column is-6">
                         <label>Address</label>
-                        <input type="text" name="address" v-model="address" class="input" v-bind:class="{ 'is-danger' : errors.includes('address') }">
+                        <div class="control">
+                            <input type="text" name="address" v-model="address" class="input" v-bind:class="{ 'is-danger' : errors.includes('address') }">
+                        </div>
                     </div>
                 </div>
-                <div class="field column is-4">
-                    <div class="control">
+                <div class="columns">
+                    <div class="field column is-6">
                         <label>Zip code</label>
-                        <input type="text" name="zipcode" v-model="zipcode" class="input" v-bind:class="{ 'is-danger' : errors.includes('zipcode') }">
+                        <div class="control">
+                            <input type="text" name="zipcode" v-model="zipcode" class="input" v-bind:class="{ 'is-danger' : errors.includes('zipcode') }">
+                        </div>
                     </div>
-                </div>
-                <div class="field column is-4">
-                    <div class="control">
+                    <div class="field column is-6">
                         <label>Place</label>
-                        <input type="text" name="place" v-model="place" class="input" v-bind:class="{ 'is-danger' : errors.includes('place') }">
+                        <div class="control">
+                            <input type="text" name="place" v-model="place" class="input" v-bind:class="{ 'is-danger' : errors.includes('place') }">
+                        </div>
                     </div>
                 </div>
                 <div class="field">
@@ -130,6 +149,7 @@
                 products: [{{ productsstring|safe }}],
                 coupon_value: 0,
                 coupon_code: '',
+                showCouponCodeError: false,
             }
         },
         computed: {
@@ -156,10 +176,14 @@
                         console.log(data)
                         if (data.amount) {
                             this.coupon_value = parseInt(data.amount)
+                            this.showCouponCodeError = False
                         } else {
                             this.coupon_value = 0
+                            this.showCouponCodeError = True
                         }
                     })
+                } else {
+                    this.showCouponCodeError = True
                 }
             },
             buy() {
