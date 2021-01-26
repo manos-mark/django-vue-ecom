@@ -63,15 +63,8 @@ def api_create_checkout_session(request):
     #
     # Create order
     #
-    first_name = data['first_name']
-    last_name = data['last_name']
-    email = data['email']
-    address = data['address']
-    zipcode = data['zipcode']
-    place = data['place']
-    phone = data['phone']
-
-    orderid = checkout(request, first_name, last_name, email, address, zipcode, place, phone)
+    orderid = checkout(request, data['first_name'], data['last_name'], data['email'], \
+        data['address'], data['zipcode'], data['place'], data['phone'])
 
     total_price = 0.0
     for item in cart:
