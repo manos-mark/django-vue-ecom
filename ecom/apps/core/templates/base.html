@@ -40,8 +40,19 @@
                 </div>
                 <div class="navbar-end">
                     {% for category in menu_categories %}
-                        <a href="{% url 'category_detail' category.slug %}" 
-                            class="navbar-item">{{ category.title }}</a>
+                        {% if not category.children.all %}
+                            <a href="{% url 'category_detail' category.slug %}" 
+                                class="navbar-item">{{ category.title }}</a>
+                        {% else %}
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a href="{% url 'category_detail' category.slug %}" class="navbar-link">{{ category.title }}</a>
+                                <div class="navbar-dropdown">
+                                    {% for subcategory in category.children.all %}
+                                        <a href="{% url 'category_detail' subcategory.slug %}" class="navbar-item">{{ subcategory.title }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endfor %} 
                         <div class="navbar-item">
                             <a href="{% url 'cart' %}" class="button is-primary">Cart ([[ numItems ]])</a> 
