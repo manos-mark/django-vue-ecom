@@ -17,7 +17,12 @@
         {% endif %}
         <hr>
         <h1 class="title">{{ product.title }}</h1>
-        <h2 class="subtitle">€{{ product.price }} &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}</h2>
+        <h2 class="subtitle">
+            €{{ product.price }} 
+            {% if product.get_rating != 0 %}
+                &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}
+            {% endif %}
+        </h2>
 
         {% if product.description %}
             <p>{{ product.description }}</p>

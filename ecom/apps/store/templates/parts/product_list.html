@@ -13,7 +13,12 @@
                     <div class="media">
                         <div class='media-content'>
                             <p class="title is-4">{{ product.title }}</p>
-                            <p class="subtitle is-6">€{{ product.price }}</p>
+                            <p class="subtitle is-6">
+                                €{{ product.price }} 
+                                {% if product.get_rating != 0 %}
+                                    &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
