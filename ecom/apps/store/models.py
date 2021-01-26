@@ -35,6 +35,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
     num_available = models.IntegerField(default=1)
+    num_visits = models.IntegerField(default=0)
+    last_visit = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         ordering = ('-date_added',)
@@ -53,12 +55,19 @@ class Product(models.Model):
         thumbnail = File(thumb_io, name=image.name)
         return thumbnail
 
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.make_thumbnail(self.image)
-        super().save(*args, **kwargs)
-
     def get_absolute_url(self):
         return '/%s/%s/' % (self.category.slug, self.slug)
+
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            if self.image:
+                self.thumbnail = self.make_thumbnail(self.image) 
+                self.save()
+                return self.thumbnail.url
+            else:
+                return ''
 
     def get_rating(self):
         total = sum(int(review['stars']) for review in self.reviews.values())

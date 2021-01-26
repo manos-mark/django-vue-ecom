@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
@@ -34,6 +35,9 @@ def search(request):
 
 def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
+    product.num_visits += 1
+    product.last_visit = datetime.now()
+    product.save()
 
     # Add review
     if request.method == 'POST' and request.user.is_authenticated:
@@ -52,10 +56,10 @@ def product_detail(request, category_slug, slug):
     if product.parent:
         return redirect('product_detail', category_slug=category_slug, slug=product.parent.slug)
 
-    imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.thumbnail.url, product.image.url)
+    imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.get_thumbnail, product.image.url)
     
     for image in product.images.all():
-        imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.thumbnail.url, image.image.url))
+        imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.get_thumbnail, image.image.url))
 
     cart = Cart(request)
     if cart.has_product(product.id):

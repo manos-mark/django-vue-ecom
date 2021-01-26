@@ -19,9 +19,9 @@
         {% include "parts/product_list.html" %}
     {% endwith %}
 
-    <hr>
-    <h1 class="title">See products from other categories</h1>
     {% if category.children.all %}
+        <hr>
+        <h1 class="title">See products from other categories</h1>   
         <div class="columns is-multiline">
             {% for subcategory in category.children.all %}
                 <div class="column is-3">

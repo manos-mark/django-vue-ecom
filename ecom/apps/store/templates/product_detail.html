@@ -49,13 +49,13 @@
                             <tr>
                                 <td>
                                     <figure class="image is-48x48">
-                                        {% if product.thumbnail.url %}
-                                            <img src="{{ product.thumbnail.url }}" alt="">
+                                        {% if product.get_thumbnail %}
+                                            <img src="{{ product.get_thumbnail }}" alt="">
                                         {% endif %}
                                     </figure>
                                 </td>
                                 <td>
-                                    {{ product.title }}
+                                    <a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.title }}</a>
                                 </td>
                                 <td>
                                     {% if product.in_cart %}
@@ -77,13 +77,13 @@
                                 <tr>
                                     <td>
                                         <figure class="image is-48x48">
-                                            {% if variant.thumbnail.url %}
-                                                <img src="{{ variant.thumbnail.url }}" alt="">
+                                            {% if variant.get_thumbnail %}
+                                                <img src="{{ variant.get_thumbnail }}" alt="">
                                             {% endif %}
                                         </figure>
                                     </td>
                                     <td>
-                                        {{ variant.title }}
+                                        <a href="{% url 'product_detail' variant.category.slug variant.slug %}">{{ variant.title }}</a>
                                     </td>
                                     <td>
                                         {% if variant.in_cart %}

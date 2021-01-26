@@ -26,4 +26,19 @@
             {% endfor %}
         </div>
     {% endif %}
+
+    <br><hr><br>
+    
+    <h1 class="title has-text-centered">Popular products</h1>
+    {% with popular_products|slice:":4" as products %}
+        {% include "parts/product_list.html" %}
+    {% endwith %}
+
+    <br><hr><br>
+    
+    <h1 class="title has-text-centered">Recently viewd products</h1>
+    {% with recently_viewed_products|slice:":4" as products %}
+        {% include "parts/product_list.html" %}
+    {% endwith %}
+            
 {% endblock %}
