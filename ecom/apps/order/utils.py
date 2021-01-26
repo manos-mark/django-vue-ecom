@@ -5,9 +5,9 @@ from apps.cart.cart import Cart
 
 from apps.order.models import Order, OrderItem
 
-def checkout(request, first_name, last_name, email, address, zipcode, place):
+def checkout(request, first_name, last_name, email, address, zipcode, place, phone):
     order = Order(first_name=first_name, last_name=last_name, \
-        email=email, address=address, zipcode=zipcode, place=place)
+        email=email, address=address, zipcode=zipcode, place=place, phone=phone)
     
     if request.user.is_authenticated:
         order.user = request.user

@@ -118,6 +118,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="columns">
+                    <div class="field column is-6">
+                        <label>Phone</label>
+                        <div class="control">
+                            <input type="text" name="phone" v-model="phone" class="input" v-bind:class="{ 'is-danger' : errors.includes('phone') }">
+                        </div>
+                    </div>
+                </div>
                 <div class="field">
                     <div class="control">
                         <button @click="buy()" class="button is-primary">Checkout</button>
@@ -143,9 +151,10 @@
                 first_name: '{{ first_name }}',
                 last_name: '{{ last_name }}',
                 email: '{{ email }}',
-                address: '',
-                zipcode: '',
-                place: '',
+                address: '{{ address }}',
+                zipcode: '{{ zipcode }}',
+                place: '{{ place }}',
+                phone: '{{ phone }}',
                 products: [{{ productsstring|safe }}],
                 coupon_value: 0,
                 coupon_code: '',
@@ -194,6 +203,7 @@
                     'address': this.address,
                     'zipcode': this.zipcode,
                     'place': this.place,
+                    'phone': this.phone,
                     'coupon_code': this.coupon_code,
                 };
 
