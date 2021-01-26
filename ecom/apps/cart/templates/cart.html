@@ -173,6 +173,19 @@
             }
         },
         methods: {
+            isFormValid() {
+                this.errors = [];
+                for (var key of Object.keys(this._data)) {
+                    if ((this._data[key] === '') & key != 'coupon_code') {
+                        this.errors.push(key)
+                    }
+                }
+
+                if (this.errors.length != 0) {
+                    return false
+                }
+                return true
+            },
             applyCoupon() {
                 if (this.coupon_code != '') {
                     fetch('/api/can_use/?coupon_code=' + this.coupon_code, {
@@ -185,66 +198,44 @@
                         console.log(data)
                         if (data.amount) {
                             this.coupon_value = parseInt(data.amount)
-                            this.showCouponCodeError = False
+                            this.showCouponCodeError = false
                         } else {
                             this.coupon_value = 0
-                            this.showCouponCodeError = True
+                            this.showCouponCodeError = true
                         }
                     })
                 } else {
-                    this.showCouponCodeError = True
+                    this.showCouponCodeError = true
                 }
             },
             buy() {
-                var data = {
-                    'first_name': this.first_name,
-                    'last_name': this.last_name,
-                    'email': this.email,
-                    'address': this.address,
-                    'zipcode': this.zipcode,
-                    'place': this.place,
-                    'phone': this.phone,
-                    'coupon_code': this.coupon_code,
-                };
+                if (this.isFormValid()) {
+                    var stripe = Stripe('{{ pub_key }}');
 
-                this.errors = [];
-                
-                for (var key of Object.keys(data)) {
-                    if ((data[key] === '') & key != 'coupon_code') {
-                        this.errors.push(key)
-                    }
+                    fetch('/api/create_checkout_session/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(this._data)
+                    })
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((session) => {
+                        return stripe.redirectToCheckout({ sessionId: session.session.id })
+                    })
+                    .then((result) => {
+                        if (result.error) {
+                            alert(result.error.message)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
                 }
-                console.log("ERRORS: ",this.errors)
-
-                if (this.errors.length != 0) {
-                    return
-                }
-            
-                var stripe = Stripe('{{ pub_key }}');
-
-                fetch('/api/create_checkout_session/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    return response.json()
-                })
-                .then((session) => {
-                    return stripe.redirectToCheckout({ sessionId: session.session.id })
-                })
-                .then((result) => {
-                    if (result.error) {
-                        alert(result.error.message)
-                    }
-                })
-                .catch((error) => {
-                    console.log('Error ', error )
-                })
             },
             // TODO: allakse to an xreiastei se update quantity
             incrementQuantity(product_id, quantity, price) {
