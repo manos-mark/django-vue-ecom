@@ -35,8 +35,8 @@
     {% endwith %}
 
     <br><hr><br>
-    
-    <h1 class="title has-text-centered">Recently viewd products</h1>
+
+    <h1 class="title has-text-centered">Recently viewed products</h1>
     {% with recently_viewed_products|slice:":4" as products %}
         {% include "parts/product_list.html" %}
     {% endwith %}

@@ -56,10 +56,10 @@ def product_detail(request, category_slug, slug):
     if product.parent:
         return redirect('product_detail', category_slug=category_slug, slug=product.parent.slug)
 
-    imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.get_thumbnail, product.image.url)
+    imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.thumbnail.url, product.image.url)
     
     for image in product.images.all():
-        imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.get_thumbnail, image.image.url))
+        imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.thumbnail.url, image.image.url))
 
     cart = Cart(request)
     if cart.has_product(product.id):
