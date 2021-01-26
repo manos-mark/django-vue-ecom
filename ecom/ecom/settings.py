@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.store',
     'apps.userprofile',
+    'apps.newsletter',
 ]
 
 MIDDLEWARE = [

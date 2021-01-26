@@ -1,0 +1,62 @@
+<div id="newsletter-wrapper" class="newsletter-wrapper">
+    <h2 class="subtitle">Subscribe to our newsletter!</h2>
+    <form v-on:submit.prevent="onSubmit">
+        <div class="field has-addons">
+            <div class="control">
+                <input v-model="email" type="email" name="email" class="input" placeholder="Your email address...">
+            </div>
+            <div class="control">
+                <button class="button is-success">Submit</button>
+            </div>
+        </div>
+    </form>
+    <div class="notification is-success" v-if="showSuccess">
+        The e-mail address was saved!
+    </div>
+</div>
+
+<script>
+    var newsletterapp = new Vue({
+        el: '#newsletter-wrapper',
+        data () {
+            return {
+                email: '',
+                showSuccess: false,
+            }
+        },
+        methods: {
+            onSubmit() {
+                if (this.email == '') {
+                    return
+                }
+                fetch('/api/add_subscriber/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({'email': this.email})
+                })
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    if (data.success) {
+                        this.showSuccess = true
+                        this.email = ''
+                        setTimeout(() => {
+                            this.showSuccess = false
+                        }, 2000)
+                    } else {
+                        this.showSuccess = false
+                    }
+                })
+                .catch((error) => {
+                    this.showSuccess = false
+                    console.log('Error ', error )
+                })
+            }
+        },
+    })
+</script>
