@@ -4,10 +4,24 @@
 
 {% block content %}
 
-    <h1 class="title">The frontpage</h1>
+    <h1 class="title has-text-centered">Featured products</h1>
 
     {% with products as products %}
         {% include "parts/product_list.html" %}
     {% endwith %}
 
+    <br>
+    <hr>
+    <br>
+
+    <div class="featured-categories">
+        <h1 class="title has-text-centered">Featured categories</h2>
+        {% for category in featured_categories %}
+            <br>
+            <h2 class="subtitle has-text-centered">{{ category.title }}</h2>
+            {% with category.products.all|slice:":4" as products %}
+                {% include "parts/product_list.html" %}
+            {% endwith %}
+        {% endfor %}
+    </div>
 {% endblock %}
