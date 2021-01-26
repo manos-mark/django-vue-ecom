@@ -109,6 +109,13 @@
                 The product was added to the cart!
             </div>
         </article>
+
+        <hr>
+        <h2 :v-if="related_products.length > 0" class="subtitle">Related products</h2>
+        {% with related_products as products %}
+            {% include "parts/product_list.html" %}
+        {% endwith %}
+        
     </div>
 {% endblock %}
 
@@ -120,9 +127,10 @@
         store: store,
         data () {
             return {
+                related_products: '{{ related_products }}',
                 showMessage: false,
                 mainImage: '{{ product.image.url }}',
-                images: [{{ imagesstring|safe }}]
+                images: [{{ imagesstring|safe }}],
             }
         },
         methods: {

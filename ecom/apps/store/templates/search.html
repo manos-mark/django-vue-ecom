@@ -7,31 +7,8 @@
     <h1 class="title">Search</h1>
     <h2 class="subtitle">Search term: "{{ query }}"</h2>
 
-    <div class="columns is-multiple">
-        {% for product in products %}
-        <div class="column is-3">
-            <div class="card">
-                {% comment %} <div class="card-image">
-                    <figure class="image">
-                        <img src="{{ product.thumbnail.url }}">
-                    </figure>
-                </div> {% endcomment %}
-                <div class="card-content">
-                    <div class="media">
-                        <div class='media-content'>
-                            <p class="title is-4">{{ product.title }}</p>
-                            <p class="subtitle is-6">€{{ product.price }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <footer class="card-footer">
-                    <a href="{% url 'product_detail' product.category.slug product.slug %}" 
-                        class="card-footer-item">View</a>
-                </footer>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+    {% with products as products %}
+        {% include "parts/product_list.html" %}
+    {% endwith %}
 
 {% endblock %}
