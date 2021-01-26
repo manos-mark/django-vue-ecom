@@ -15,6 +15,12 @@
 
     <h1 class="title">{{ category.title }}</h1>
 
+    {% with products as products %}
+        {% include "parts/product_list.html" %}
+    {% endwith %}
+
+    <hr>
+    <h1 class="title">See products from other categories</h1>
     {% if category.children.all %}
         <div class="columns is-multiline">
             {% for subcategory in category.children.all %}
@@ -24,10 +30,6 @@
                 </div>
             {% endfor %}
         </div>
-    {% else %}
-        {% with products as products %}
-            {% include "parts/product_list.html" %}
-        {% endwith %}
     {% endif %}
 
 {% endblock %}
