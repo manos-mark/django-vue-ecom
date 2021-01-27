@@ -209,13 +209,7 @@
                 this.mainImage = image
             },
             addToCart(product_id) {
-                {% comment %} console.log("product.num_available: ",this.product.num_available) {% endcomment %}
-
-                var data = {
-                    'product_id': product_id, 
-                    'update_quantity': false,
-                    'quantity': 1
-                }
+                var data = {'product_id': product_id}
 
                 fetch('/api/add_to_cart/', {
                     method: 'POST',

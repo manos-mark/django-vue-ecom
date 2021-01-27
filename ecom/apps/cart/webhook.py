@@ -11,7 +11,7 @@ from .cart import Cart
 
 from apps.order.models import Order
 
-from apps.store.utils import decrement_product_quantity
+from apps.store.utils import decrement_product_quantity, send_order_confirmation
 
 @csrf_exempt
 def webhook(request):
