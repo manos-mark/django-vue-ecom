@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ store.name }} | {% endblock title %}
+
+{% block content %}
+    <h1 class="title">{{ store.name }}</h1>
+
+    {% with products as store.products %}
+        {% include "parts/product_list.html" %}
+    {% endwith %}
+
+    {% comment %} {% if category.children.all %}
+        <hr>
+        <h1 class="title">See products from other categories</h1>   
+        <div class="columns is-multiline">
+            {% for subcategory in category.children.all %}
+                <div class="column is-3">
+                    <h2 class="subtitle">{{ subcategory.title }}</h2>
+                    <a href="{% url 'category_detail' subcategory.slug %}">View products</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %} {% endcomment %}
+
+{% endblock %}

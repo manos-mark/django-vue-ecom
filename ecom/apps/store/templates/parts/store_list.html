@@ -1,0 +1,33 @@
+<div class="columns is-multiple">
+    {% for store in stores %}
+        <div class="column is-3">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image">
+                        {% if store.get_thumbnail %}
+                            <img src="{{ store.get_thumbnail }}">
+                        {% endif %}
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class='media-content'>
+                            <p class="title is-4">{{ store.name }}</p>
+                            {% comment %} <p class="subtitle is-6">
+                                €{{ product.price }} 
+                                {% if product.get_rating != 0 %}
+                                    &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}
+                                {% endif %}
+                            </p> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="card-footer">
+                    <a href="{% url 'store_detail' store.slug %}" 
+                        class="card-footer-item">View</a>
+                </footer>
+            </div>
+        </div>
+    {% endfor %}
+</div>

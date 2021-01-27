@@ -4,8 +4,12 @@
 
 {% block content %}
 
-    <h1 class="title has-text-centered">Featured products</h1>
+    <h1 class="title has-text-centered">Shops</h1>
+    {% with stores as stores %}
+        {% include "parts/store_list.html" %}
+    {% endwith %}
 
+    <h1 class="title has-text-centered">Featured products</h1>
     {% with products as products %}
         {% include "parts/product_list.html" %}
     {% endwith %}
