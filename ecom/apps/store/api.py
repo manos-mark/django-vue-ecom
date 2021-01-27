@@ -2,6 +2,7 @@ import json
 from os import setegid
 import stripe
 
+from django.http import HttpResponseBadRequest
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -94,7 +95,7 @@ def api_add_to_cart(request):
     product = get_object_or_404(Product, pk=product_id)
 
     if (product.num_available <= 0):
-        return JsonResponse({'status': 400, 'message': 'Product is not available in stock!'})
+        return HttpResponseBadRequest('Product is not available in stock!')
 
     cart.add(product=product)
 

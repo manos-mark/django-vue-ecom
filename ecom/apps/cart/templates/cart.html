@@ -307,11 +307,11 @@
                         var product = this.products[i];
                         
                         if (product.id === product_id) {
-                            this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
+                            this.products[i].quantity -= 1;
+                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
                             if (this.products[i].quantity == 0) {
                                 this.products = this.products.filter(product => product.id !== product_id)
                             }
-                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
                         }
                     }
                 })
