@@ -19,6 +19,9 @@ def frontpage(request):
 
     return render(request, 'frontpage.html', context)
 
+def create_eshop(request):
+    return render(request, 'create_eshop.html')
+
 def contact(request):
     return render(request, 'contact.html')
 

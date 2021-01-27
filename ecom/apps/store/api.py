@@ -6,8 +6,9 @@ from django.http import HttpResponseBadRequest
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Product
+from .models import Product, Store
 
 from apps.coupon.models import Coupon
 from apps.cart.cart import Cart
@@ -118,5 +119,48 @@ def api_remove_from_cart(request):
     product = get_object_or_404(Product, pk=product_id)
     product.num_available += quantity
     product.save()
+
+    return JsonResponse(jsonresponse)
+
+@csrf_exempt
+def api_create_eshop(request):
+    data = json.loads(request.body)
+
+    print(data.get('name'))
+    store = None
+    try:
+        store = Store.objects.get(name=data.get('name'))
+    except:
+        print("Store " + data.get('name') + " doesn't exists. Creating one...")
+    finally:
+        if store:
+            return HttpResponseBadRequest('Store already exists, with this name!')
+
+    
+
+    store = Store(
+        name = data['name'],
+        email = data['email'],
+        address = data['email'],
+        zipcode = data['zipcode'],
+        phone = data['phone'],
+        image = data['file']
+    )
+    store.save()
+
+    jsonresponse = {'success': True}
+
+    return JsonResponse(jsonresponse)
+
+@csrf_exempt
+def api_upload_store_picture(request):
+    data = json.loads(request.body)
+
+    # store = Store.objects.get_object_or_404(name=data['name'])
+
+    store.image = data.file
+    store.save()
+
+    jsonresponse = {'success': True}
 
     return JsonResponse(jsonresponse)

@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}Create your own eshop | {% endblock title %}
+
+{% block content %}
+
+    <div id="createeshopapp" class="columns">
+        <div class="column is-6 is-offset-3">
+            <h1 class="title has-text-centered">Create your own eshop</h1>
+
+            <form v-on:submit.prevent>
+
+                <div class="columns">
+                    <div class="field column is-6">
+                        <label>Shop name</label>
+                        <div class="control">
+                            <input type="text" name="name" v-model="name" class="input" v-bind:class="{ 'is-danger' : errors.includes('name') }">
+                        </div>
+                    </div>
+                    <div class="field column is-6">
+                        <label>Email</label>
+                        <div class="control">
+                            <input type="email" name="email" v-model="email" class="input" v-bind:class="{ 'is-danger' : errors.includes('email') }">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="field column is-6">
+                        <label>Zip code</label>
+                        <div class="control">
+                            <input type="text" name="zipcode" v-model="zipcode" class="input" v-bind:class="{ 'is-danger' : errors.includes('zipcode') }">
+                        </div>
+                    </div>
+                    <div class="field column is-6">
+                        <label>Address</label>
+                        <div class="control">
+                            <input type="text" name="address" v-model="address" class="input" v-bind:class="{ 'is-danger' : errors.includes('address') }">
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column is-6">
+                        <label>Phone</label>
+                        <div class="control">
+                            <input type="text" name="phone" v-model="phone" class="input" v-bind:class="{ 'is-danger' : errors.includes('phone') }">
+                        </div>
+                    </div>
+                    <div class="field column is-6">
+                        <label>Profile picture</label>
+                        <div class="control">
+                            <input type="file" accept=".jpg, .jpeg, .png" name="image" v-on:change="onFileChange" class="input" v-bind:class="{ 'is-danger' : errors.includes('image') }">
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="errors.length > 0" class="notification is-danger is-light">Please fill in all the reruired fields!</div>
+
+                <div class="field">
+                    <div class="control has-text-centered">
+                        <button class="button is-success" @click="create_eshop()">Create e-shop</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var createeshopapp = new Vue({
+        el: '#createeshopapp',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                errors: [],
+                name: '',
+                email: '',
+                address: '',
+                zipcode: '',
+                phone: '',
+                image: '',
+            }
+        },
+        methods: {
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                
+                if (!files.length) {
+                    this.errors.push('image')
+                    return;
+                }
+                
+                if (this.errors.includes('image')) {
+                    // TODO: hide error status when image is uploaded successfully
+                    delete this.errors['image']
+                }
+                this.image = files[0];
+            },
+            isFormValid() {
+                this.errors = [];
+                for (var key of Object.keys(this._data)) {
+                    if (this._data[key] === '') {
+                        this.errors.push(key)
+                    }
+                }
+
+                if (this.errors.length != 0) {
+                    return false
+                }
+                return true
+            },
+            create_eshop() {
+                data = new FormData();
+                data.append('file', this.image);
+                data.append('name', this.name);
+                data.append('email', this.email);
+                data.append('address', this.address);
+                data.append('zipcode', this.zipcode)
+                data.append('phone', this.phone)
+
+                // data = {
+                //     name: this.name,
+                //     email: this.email,
+                //     address: this.address,
+                //     zipcode: this.zipcode,
+                //     phone: this.phone,
+                // }        
+
+                if (this.isFormValid()) {
+                    fetch('/api/create_eshop/', {
+                        method: 'POST',
+                        headers: {
+                            // 'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => {
+                        // data = new FormData();
+                        // data.append('file', this.image);
+
+                        // fetch('/api/upload_store_picture/', {
+                        //     method: 'POST',
+                        //     headers: {
+                        //         'X-CSRFToken': '{{ csrf_token }}',
+                        //     },
+                        //     credentials: 'same-origin',
+                        //     body: JSON.stringify(data)
+                        // })
+                        // .then((response) => {
+                        //     return response.json()
+                        // })
+                        // .catch((error) => {
+                        //     console.log('Error ', error )
+                        // })
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
+                }
+            },
+            
+        }
+    });
+</script>
+{% endblock %}
