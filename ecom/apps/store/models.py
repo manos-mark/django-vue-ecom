@@ -22,7 +22,7 @@ class Store(models.Model):
     num_visits = models.IntegerField(default=0)
     last_visit = models.DateTimeField(blank=True, null=True)
 
-    is_activated_by_admin = models.BooleanField(default=False)
+    is_activated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -144,3 +144,6 @@ class ProductReview(models.Model):
     stars = models.IntegerField()
 
     date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.product.title

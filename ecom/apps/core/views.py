@@ -3,8 +3,7 @@ from django.shortcuts import render
 from apps.store.models import Product, Category, Store
 
 def frontpage(request):
-    stores = Store.objects.all().order_by('-num_visits')
-    print(stores)
+    stores = Store.objects.filter(is_activated=True).order_by('-num_visits')
     products = Product.objects.filter(is_featured=True)
     featured_categories = Category.objects.filter(is_featured=True)
     popular_products = Product.objects.all().order_by('-num_visits')[0:4]
