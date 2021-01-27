@@ -4,6 +4,7 @@ from apps.store.models import Product, Category, Store
 
 def frontpage(request):
     stores = Store.objects.all().order_by('-num_visits')
+    print(stores)
     products = Product.objects.filter(is_featured=True)
     featured_categories = Category.objects.filter(is_featured=True)
     popular_products = Product.objects.all().order_by('-num_visits')[0:4]
@@ -19,8 +20,8 @@ def frontpage(request):
 
     return render(request, 'frontpage.html', context)
 
-def create_eshop(request):
-    return render(request, 'create_eshop.html')
+def create_store(request):
+    return render(request, 'create_store.html')
 
 def contact(request):
     return render(request, 'contact.html')

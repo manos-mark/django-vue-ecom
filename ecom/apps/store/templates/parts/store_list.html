@@ -1,6 +1,7 @@
 <div class="columns is-multiple">
 
     <!-- Create a shop -->
+    
     <div class="column is-3">
         <div class="card">
             <div class="card-image">
@@ -17,12 +18,18 @@
             </div>
 
             <footer class="card-footer">
-                <a href="{% url 'create_eshop' %}" 
-                    class="card-footer-item button is-danger is-outlined">Create an e-shop now!</a>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'create_store' %}" 
+                        class="card-footer-item button is-danger is-outlined">Create an e-shop now!</a>
+                {% else %}
+                    <a href="{% url 'login' %}" 
+                    class="card-footer-item button is-danger is-outlined">Log in to create an e-shop now!</a>
+                {% endif %}
             </footer>
         </div>
     </div>
     <!-- /Create a shop -->
+    
     
     {% for store in stores %}
         <div class="column is-3">

@@ -24,12 +24,12 @@ from django.contrib.auth import views
 from apps.userprofile.views import signup, myaccount
 from apps.cart.webhook import webhook
 from apps.cart.views import cart_detail, success
-from apps.core.views import frontpage, contact, about, create_eshop
+from apps.core.views import frontpage, contact, about, create_store
 from apps.order.views import admin_order_pdf
 from apps.store.views import product_detail, category_detail, search, store_detail
 
 from apps.newsletter.api import api_add_subscriber
-from apps.store.api import api_add_to_cart, api_remove_from_cart, api_upload_store_picture, api_create_checkout_session, api_create_eshop
+from apps.store.api import api_add_to_cart, api_remove_from_cart, api_create_checkout_session, api_create_store
 from apps.coupon.api import api_can_use
 
 from .sitemaps import StaticViewSitemap, CategorySitemap, ProductSitemap
@@ -38,7 +38,7 @@ sitemaps = {'static': StaticViewSitemap, 'product': ProductSitemap, 'category': 
 
 urlpatterns = [
     path('', frontpage, name='frontpage'),
-    path('create_eshop/', create_eshop, name="create_eshop"),
+    path('create_store/', create_store, name="create_store"),
     path('search/', search, name='search'),
     path('cart/', cart_detail, name='cart'),
     path('hooks/', webhook, name='webhook'),
@@ -62,8 +62,7 @@ urlpatterns = [
     path('api/add_to_cart/', api_add_to_cart, name='api_add_to_cart'),
     path('api/remove_from_cart/', api_remove_from_cart, name='api_remove_from_cart'),
     path('api/add_subscriber/', api_add_subscriber, name="api_add_subscriber"),
-    path('api/create_eshop/', api_create_eshop, name="api_create_eshop"),
-    path('api/upload_store_picture/', api_upload_store_picture, name="api_upload_store_picture"),
+    path('api/create_store/', api_create_store, name="api_create_store"),
 
     # Store
     path('store/<slug:slug>/', store_detail, name='store_detail'),

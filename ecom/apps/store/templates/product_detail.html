@@ -244,7 +244,10 @@
                             this.showError = false
                         }, 2000)
                     }
-                    
+                    return response.json()
+                })
+                .thend((data) => {
+                    console.log(data)
                 })
                 .catch((error) => {
                     console.log('Error ', error )

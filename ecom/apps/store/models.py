@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.files import File
 from django.db import models
 
+from apps.userprofile.models import Userprofile
+
 class Store(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
@@ -31,6 +33,13 @@ class Store(models.Model):
     def save(self, *args, **kwargs):
         self.slug = self.slug or slugify(self.name)
         super().save(*args, **kwargs)
+
+class StoreAdmin(models.Model):
+    user = models.ForeignKey(Userprofile, related_name='userprofile', on_delete=models.CASCADE, blank=True, null=True)
+    store = models.ForeignKey(Store, related_name='store', on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.user.username
 
 class Category(models.Model):
     store = models.ForeignKey(Store, related_name='categories', on_delete=models.CASCADE, blank=True, null=True)
@@ -135,4 +144,3 @@ class ProductReview(models.Model):
     stars = models.IntegerField()
 
     date_added = models.DateTimeField(auto_now_add=True)
-
