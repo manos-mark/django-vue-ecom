@@ -1,11 +1,36 @@
 <div class="columns is-multiple">
+
+    <!-- Create a shop -->
+    <div class="column is-3">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-3by2">
+                        <img src="https://media1.lpgservis.cz/wp-content/uploads/2016/08/icon-big-eshop.png">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class='media-content'>
+                        <p class="title is-4">Do you own a bussines?</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="card-footer">
+                <a href="" 
+                    class="card-footer-item button is-danger is-outlined">Create an e-shop now!</a>
+            </footer>
+        </div>
+    </div>
+    <!-- /Create a shop -->
+    
     {% for store in stores %}
         <div class="column is-3">
             <div class="card">
                 <div class="card-image">
-                    <figure class="image">
-                        {% if store.get_thumbnail %}
-                            <img src="{{ store.get_thumbnail }}">
+                    <figure class="image is-3by2">
+                        {% if store.image %}
+                            <img src="{{ store.image.url }}">
                         {% endif %}
                     </figure>
                 </div>
@@ -25,9 +50,10 @@
 
                 <footer class="card-footer">
                     <a href="{% url 'store_detail' store.slug %}" 
-                        class="card-footer-item">View</a>
+                        class="card-footer-item button is-primary is-outlined">View</a>
                 </footer>
             </div>
         </div>
     {% endfor %}
+
 </div>

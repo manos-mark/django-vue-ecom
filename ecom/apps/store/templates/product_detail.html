@@ -30,9 +30,9 @@
         <hr>
         <h1 class="title">{{ product.title }}</h1>
         <h2 class="subtitle">
-            €{{ product.price }} 
+            <span class="level-left">€{{ product.price }}</span>
             {% if product.get_rating != 0 %}
-                &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}
+                <span class="level-right">★{{ product.get_rating|floatformat:1 }}</span>
             {% endif %}
         </h2>
 

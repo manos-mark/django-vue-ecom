@@ -3,9 +3,9 @@
         <div class="column is-3">
             <div class="card">
                 <div class="card-image">
-                    <figure class="image">
-                        {% if product.get_thumbnail %}
-                            <img src="{{ product.get_thumbnail }}">
+                    <figure class="image 3by2">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}">
                         {% endif %}
                     </figure>
                 </div>
@@ -13,10 +13,10 @@
                     <div class="media">
                         <div class='media-content'>
                             <p class="title is-4">{{ product.title }}</p>
-                            <p class="subtitle is-6">
-                                €{{ product.price }} 
+                            <p class="subtitle is-6 level">
+                                <span class="level-left">€{{ product.price }}</span>
                                 {% if product.get_rating != 0 %}
-                                    &nbsp;&nbsp; ★{{ product.get_rating|floatformat:1 }}
+                                    <span class="level-right">★{{ product.get_rating|floatformat:1 }}</span>
                                 {% endif %}
                             </p>
                         </div>
@@ -25,7 +25,7 @@
 
                 <footer class="card-footer">
                     <a href="{% url 'product_detail' product.category.slug product.slug %}" 
-                        class="card-footer-item">View</a>
+                        class="card-footer-item button is-primary is-outlined">View</a>
                 </footer>
             </div>
         </div>
