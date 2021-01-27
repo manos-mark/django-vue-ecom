@@ -88,17 +88,18 @@ def api_add_to_cart(request):
 
     jsonresponse = {'success': True}
     product_id = data['product_id']
-    update = data['update_quantity']
-    quantity = data['quantity']
 
     cart = Cart(request)
 
     product = get_object_or_404(Product, pk=product_id)
 
-    if not update:
-        cart.add(product=product, quantity=1, update_quantity=False)
-    else:
-        cart.add(product=product, quantity=quantity, update_quantity=True)
+    if (product.num_available <= 0):
+        return JsonResponse({'status': 400, 'message': 'Product is not available in stock!'})
+
+    cart.add(product=product)
+
+    product.num_available -= 1
+    product.save()
 
     return JsonResponse(jsonresponse)
 
@@ -106,9 +107,15 @@ def api_remove_from_cart(request):
     data = json.loads(request.body)
 
     jsonresponse = {'success': True}
+
     product_id = str(data['product_id'])
+    quantity = int(data['quantity'])
 
     cart = Cart(request)
-    cart.remove(product_id)
+    cart.remove(product_id, quantity)
+
+    product = get_object_or_404(Product, pk=product_id)
+    product.num_available += quantity
+    product.save()
 
     return JsonResponse(jsonresponse)

@@ -28,18 +28,14 @@ class Cart(object):
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, product):
         product_id = str(product.id)
         price = product.price
 
-        # TODO should i use Django's get_or_create???
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}
-        
-        if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
-        else:
-            self.cart[product_id]['quantity'] += 1
+
+        self.cart[product_id]['quantity'] += 1
 
         self.save()
 
@@ -49,10 +45,12 @@ class Cart(object):
         else:
             return False
 
-    def remove(self, product_id):
+    def remove(self, product_id, quantity):
         if product_id in self.cart:
-            print("REMOVE")
-            del self.cart[product_id]
+            self.cart[product_id]['quantity'] -= quantity
+
+            if self.cart[product_id]['quantity'] == 0:
+                del self.cart[product_id]
             self.save()
 
     def save(self):

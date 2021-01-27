@@ -201,6 +201,7 @@
                 showMessage: false,
                 mainImage: '{{ product.image.url }}',
                 images: [{{ imagesstring|safe }}],
+                num_available: '{{ product }},'
             }
         },
         methods: {
@@ -208,7 +209,7 @@
                 this.mainImage = image
             },
             addToCart(product_id) {
-                console.log(product_id)
+                {% comment %} console.log("product.num_available: ",this.product.num_available) {% endcomment %}
 
                 var data = {
                     'product_id': product_id, 
@@ -226,6 +227,7 @@
                     body: JSON.stringify(data)
                 })
                 .then((response) => {
+                    console.log('response ', response )
                     this.showMessage = true
                     store.commit('increment', 1)
                     setTimeout(() => {

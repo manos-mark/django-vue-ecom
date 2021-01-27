@@ -23,12 +23,12 @@
                             </td>
                             <td><a :href="product.url">[[ product.title ]]</a></td>
                             <td>
-                                <button @click="decrementQuantity(product.id, product.quantity, product.price)">-</button>
+                                <button @click="removeFromCart(product.id, 1, product.price)" class="button is-outlined is-info">-</button>
                                 [[ product.quantity ]]
-                                <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button>
+                                <button @click="addToCart(product.id, product.price)" class="button is-outlined is-info">+</button>
                             </td>
                             <td>[[ product.total_price ]]</td>
-                            <td><button @click="removeFromCart(product.id)" class="button is-danger">Remove</button></td>
+                            <td><button @click="removeFromCart(product.id, product.quantity, product.price)" class="button is-danger">Remove</button></td>
                         </tr>
                     </tbody>
 
@@ -237,30 +237,25 @@
                     })
                 }
             },
-            // TODO: allakse to an xreiastei se update quantity
-            incrementQuantity(product_id, quantity, price) {
+            addToCart(product_id, price) {
+                // Check if the product is available on stock
                 isProductAvailable = false
 
                 for (var i=0; i<this.products.length; i++) {
                     var product = this.products[i]
-
                     if (product.id === product_id) {
-                        if (quantity < product.num_available) {
+                        if (product.num_available > 0) {
                             isProductAvailable = true
                         }
                     }
                 }
-                
+
                 if (!isProductAvailable) {
                     alert('No more available in stock')
                     return
                 }
 
-                var data = {
-                    'product_id': product_id, 
-                    'update_quantity': true,
-                    'quantity': parseInt(quantity) + 1
-                }
+                var data = {'product_id': product_id}
 
                 store.commit('increment', 1)
                 store.commit('incrementTotalCost', parseFloat(price))
@@ -276,63 +271,26 @@
                 })
                 .then((response) => {
                     console.log('Quantity updated')
+                    // TODO: get this from the backend
                     for (var i=0; i<this.products.length; i++) {
                         var product = this.products[i];
-
+                        
                         if (product.id === product_id) {
                             this.products[i].quantity = parseInt(this.products[i].quantity) + 1;
                             this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
                         }
                     }
                 })
-                .catch((error) => {
-                    console.log('Error ', error )
-                })
             },
-            decrementQuantity(product_id, quantity, price) {
-                var data = {
-                    'product_id': product_id, 
-                    'update_quantity': true,
-                    'quantity': parseInt(quantity) - 1
-                }
-
-                store.commit('decrement', 1)
+            removeFromCart(product_id, quantity, price) {
+                store.commit('decrement', quantity)
                 store.commit('decrementTotalCost', parseFloat(price))
 
-                if (data['quantity'] === 0) {
-                    this.removeFromCart(product_id)
-                    return
+                var data = {
+                    'product_id': product_id,
+                    'quantity': quantity    
                 }
-
-                fetch('/api/add_to_cart/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    console.log('Quantity updated')
-                    for (var i=0; i<this.products.length; i++) {
-                        var product = this.products[i];
-
-                        if (product.id === product_id) {
-                            this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
-                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
-                        }
-                    }
-                })
-                .catch((error) => {
-                    console.log('Error ', error )
-                })
-            },
-            removeFromCart(product_id) {
-                console.log(product_id)
-
-                var data = {'product_id': product_id}
-
+                
                 fetch('/api/remove_from_cart/', {
                     method: 'POST',
                     headers: {
@@ -344,8 +302,18 @@
                 })
                 .then((response) => {
                     console.log('Removed from cart')
-                    // TODO: remove from store
-                    this.products = this.products.filter(product => product.id !== product_id)
+                    // TODO: get this from the backend
+                    for (var i=0; i<this.products.length; i++) {
+                        var product = this.products[i];
+                        
+                        if (product.id === product_id) {
+                            this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
+                            if (this.products[i].quantity == 0) {
+                                this.products = this.products.filter(product => product.id !== product_id)
+                            }
+                            this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
+                        }
+                    }
                 })
                 .catch((error) => {
                     console.log('Error ', error )
