@@ -35,7 +35,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'cart'
+LOGIN_REDIRECT_URL = 'frontpage'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
 # Cart

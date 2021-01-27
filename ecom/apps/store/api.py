@@ -5,10 +5,13 @@ import stripe
 from django.http import HttpResponseBadRequest
 from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
-from .models import Product
+from .models import Product, Store, StoreAdmin
 
+from apps.userprofile.models import Userprofile
 from apps.coupon.models import Coupon
 from apps.cart.cart import Cart
 from apps.order.utils import checkout
@@ -120,3 +123,37 @@ def api_remove_from_cart(request):
     product.save()
 
     return JsonResponse(jsonresponse)
+
+from django import forms
+
+@csrf_exempt
+@login_required
+def api_create_store(request):
+
+    store = None
+    try:
+        store = Store.objects.get(name=request.POST.get('name'))
+    except:
+        print("Store " + request.POST.get('name') + " doesn't exists. Creating one...")
+    finally:
+        if store:
+            return HttpResponseBadRequest('Store already exists, with this name!')
+
+    store = Store(
+        name = request.POST.get('name'),
+        email = request.POST.get('email'),
+        address = request.POST.get('address'),
+        zipcode = request.POST.get('zipcode'),
+        phone = request.POST.get('phone'),
+        image = request.FILES.get('image')
+    )
+    
+
+    # TODO: fix id (pernei lathos xrhsth)
+    user = get_object_or_404(Userprofile, id=request.user.id)
+    store_admin = StoreAdmin(store=store, user=user)
+
+    store.save()
+    store_admin.save()
+
+    return redirect('frontpage')

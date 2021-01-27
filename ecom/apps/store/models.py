@@ -1,17 +1,54 @@
 from io import BytesIO
 from PIL import Image
 
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.files import File
 from django.db import models
 
+from apps.userprofile.models import Userprofile
+
+class Store(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    zipcode = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    num_visits = models.IntegerField(default=0)
+    last_visit = models.DateTimeField(blank=True, null=True)
+
+    is_activated_by_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return '/%s/' % (self.slug)
+
+    def save(self, *args, **kwargs):
+        self.slug = self.slug or slugify(self.name)
+        super().save(*args, **kwargs)
+
+class StoreAdmin(models.Model):
+    user = models.ForeignKey(Userprofile, related_name='userprofile', on_delete=models.CASCADE, blank=True, null=True)
+    store = models.ForeignKey(Store, related_name='store', on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.user.username
 
 class Category(models.Model):
+    store = models.ForeignKey(Store, related_name='categories', on_delete=models.CASCADE, blank=True, null=True)
     parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     ordering = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -24,10 +61,11 @@ class Category(models.Model):
         return '/%s/' % (self.slug)
 
 class Product(models.Model):
+    store = models.ForeignKey(Store, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', related_name='variants', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
     price = models.FloatField()
     is_featured = models.BooleanField(default=False)

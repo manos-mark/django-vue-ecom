@@ -227,10 +227,8 @@
                     .then((session) => {
                         return stripe.redirectToCheckout({ sessionId: session.session.id })
                     })
-                    .then((result) => {
-                        if (result.error) {
-                            alert(result.error.message)
-                        }
+                    .then((data) => {
+                        console.log(data)
                     })
                     .catch((error) => {
                         console.log('Error ', error )
@@ -280,6 +278,10 @@
                             this.products[i].total_price = parseInt(this.products[i].quantity) * this.products[i].price;
                         }
                     }
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data)
                 })
             },
             removeFromCart(product_id, quantity, price) {
@@ -314,6 +316,10 @@
                             }
                         }
                     }
+                    return response.json()
+                })
+                .thend((data) => {
+                    console.log(data)
                 })
                 .catch((error) => {
                     console.log('Error ', error )

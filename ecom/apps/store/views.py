@@ -4,7 +4,7 @@ from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 
-from .models import Product, Category, ProductReview
+from .models import Product, Category, ProductReview, Store
 
 from apps.cart.cart import Cart
 
@@ -32,6 +32,21 @@ def search(request):
         'sorting': sorting,
     }
     return render(request, 'search.html', context)
+
+def store_detail(request, slug):
+    store = get_object_or_404(Store, slug=slug)
+
+    store.num_visits += 1
+    store.last_visit = datetime.now()
+    store.save()
+
+    context = {
+        'store': store,
+        'products': store.products.all(),
+        'categories': store.categories.all(),
+    }
+
+    return render(request, 'store_detail.html', context)
 
 def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug)
