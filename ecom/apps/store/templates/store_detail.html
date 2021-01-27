@@ -3,23 +3,12 @@
 {% block title %}{{ store.name }} | {% endblock title %}
 
 {% block content %}
-    <h1 class="title">{{ store.name }}</h1>
+    <h1 class="title has-text-centered">{{ store.name }}</h1>
+    <hr>
+    <h1 class="title">Categories of products</h1>   
 
-    {% with products as store.products %}
-        {% include "parts/product_list.html" %}
+    {% with categories as categories %}
+        {% include "parts/category_list.html" %}
     {% endwith %}
-    
-    {% if store.categories.children.all %}
-        <hr>
-        <h1 class="title">See products from other categories</h1>   
-        <div class="columns is-multiline">
-            {% for subcategory in store.categories.children.all %}
-                <div class="column is-3">
-                    <h2 class="subtitle">{{ subcategory.title }}</h2>
-                    <a href="{% url 'category_detail' subcategory.slug %}">View products</a>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
 
 {% endblock %}
