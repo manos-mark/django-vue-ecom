@@ -63,8 +63,8 @@ urlpatterns = [
     path('api/add_subscriber/', api_add_subscriber, name="api_add_subscriber"),
 
     # Store
+    path('store/<slug:slug>/', store_detail, name='store_detail'),
     path('<slug:category_slug>/<slug:slug>/', product_detail, name='product_detail'),
     path('<slug:slug>/', category_detail, name='category_detail'),
-    path('<slug:slug>/', store_detail, name='store_detail'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

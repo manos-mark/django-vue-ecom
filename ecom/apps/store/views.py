@@ -42,6 +42,8 @@ def store_detail(request, slug):
 
     context = {
         'store': store,
+        'products': store.products.all(),
+        'categories': store.categories.all(),
     }
 
     return render(request, 'store_detail.html', context)
