@@ -10,6 +10,13 @@ from apps.store.utils import get_owned_stores
 from apps.cart.cart import Cart
 
 def search(request):
+    """
+    A search ability to find products by providing a string.
+    The user's provided string is filtered in the database. 
+    The search is triggered in title and the description
+    Return:
+        -[Render] Renders the search.html containing the results
+    """
     query = request.GET.get('query')
     
     instock = request.GET.get('instock')
@@ -35,6 +42,13 @@ def search(request):
     return render(request, 'search.html', context)
 
 def store_detail(request, slug):
+    """
+    Renders the details of a specific store using as a parameter the slug (stringify id)
+    Params:
+        -slug:[String] A string-like id
+    Return:
+        -[Render] Renders the store_detail.html
+    """
     store = get_object_or_404(Store, slug=slug)
 
     store.num_visits += 1
@@ -53,6 +67,15 @@ def store_detail(request, slug):
     return render(request, 'store_detail.html', context)
 
 def product_detail(request, category_slug, slug):
+    """
+    Return details about a specific product according to a request
+    Params:
+        - category_slug:[String] A specific ID-like string for a specific category
+        - slug: [String]  A specific ID-like string for a specific product
+    Return:
+        -[Render]: Return a product_detail.html containing information about a specific product
+    """
+
     product = get_object_or_404(Product, slug=slug)
     product.num_visits += 1
     product.last_visit = datetime.now()
@@ -92,6 +115,13 @@ def product_detail(request, category_slug, slug):
     return render(request, 'product_detail.html', context)
 
 def category_detail(request, slug):
+    """
+    Renders specific details of a category
+    Params:
+        -slug:[String] A specified id-like of a category
+    Return:
+        -[Render]: Renders the category_detail.html according to the category has been defined into the slug variable
+    """
     category = get_object_or_404(Category, slug=slug)
     products = category.products.all()
     owned_stores = get_owned_stores(request)

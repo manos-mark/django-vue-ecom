@@ -4,6 +4,11 @@ from django.shortcuts import render
 from .cart import Cart
 
 def cart_detail(request):
+    """
+    Renders the cart page, getting a list of ordered products to render them 
+    Return:
+        -[Render] Renders the cart.html
+    """
     cart = Cart(request)
     productsstring = ''
 
@@ -15,7 +20,8 @@ def cart_detail(request):
             %(product.id, product.title, product.price, item['quantity'], \
             item['total_price'], product.thumbnail.url, url, product.num_available)
         productsstring += b
-
+    # Checks if the request is authenticated to get whole information about the user
+    # and render them in the contact information form
     if request.user.is_authenticated:
         first_name = request.user.first_name
         last_name = request.user.last_name
@@ -25,6 +31,7 @@ def cart_detail(request):
         place = request.user.userprofile.place
         phone = request.user.userprofile.phone
     else:
+    # If it is not authentiated set empty strings
         first_name = last_name = email = address = zipcode = place = phone = ''
 
     context = {
@@ -42,6 +49,11 @@ def cart_detail(request):
     return render(request, 'cart.html', context)
 
 def success(request):
+    """
+    Cleans the cart if the order has finished
+    Return:
+        -[Render] Renders the success.html
+    """
     cart = Cart(request)
     cart.clear()
     return render(request, 'success.html')

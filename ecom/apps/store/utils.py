@@ -7,12 +7,22 @@ from apps.store.models import StoreAdmin
 
 
 def decrement_product_quantity(order):
+    """
+    Decrements the product's quantity
+    Params:
+        -order: [Object] The specific order that have been triggered
+    """
     for item in order.items.all():
         product = item.product
         product.num_available -= item.quantity
         product.save()
 
 def send_order_confirmation(order):
+    """
+    Send the order's confirmation to the customer
+    Parameters:
+        -order: [Dictionary] Order's information 
+    """
     subject = 'Order confirmation'
     from_email = 'noreply@ecom.com'
     to = ['mail@ecom.com', order.email]
@@ -31,6 +41,11 @@ def send_order_confirmation(order):
     msg.send()
 
 def get_owned_stores(request):
+    """
+    Gets the user's owned stores
+    Return:
+        -owned_store: [List] A list containing the user's stores
+    """
     owned_stores = []
     if not request.user.is_anonymous:
         user = User.objects.get(id=request.user.id)

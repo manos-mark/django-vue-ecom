@@ -6,6 +6,9 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 class Order(models.Model):
+    """
+    The customer's order
+    """
     ORDERED = 'ordered'
     SHIPPED = 'shipped'
     ARRIVED = 'arrived'
@@ -38,9 +41,19 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, default=ORDERED)
 
     def __str__(self):
+        """
+        Returns the information of the order (First name, Last name, Creation date)
+        Return:
+            - [String] Information about the order
+        """
         return '%s %s %s' % (self.first_name, self.last_name, self.created_at)
 
     def get_total_quantity(self):
+        """
+        Return the total sum of the quintity of a product
+        Return:
+            -[Integer] The sum of the product
+        """
         return sum(int(item.quantity) for item in self.items.all())
 
     # TODO: Fix this to sent emails when the status has been changed from the admin panel setter.
@@ -66,10 +79,18 @@ class Order(models.Model):
     #                     ['manos.mark@gmail.com', self.email], fail_silently=False, html_message=html)
 
 class OrderItem(models.Model):
+    """
+    A model that contains each item of the order
+    """
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='items', on_delete=models.DO_NOTHING)
     price = models.FloatField()
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
+        """
+        Return the Order's id from a specific product
+        Return:
+            -[String] The id of the product's order
+        """
         return '%s' % self.id

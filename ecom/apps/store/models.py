@@ -9,6 +9,10 @@ from django.db import models
 from apps.userprofile.models import Userprofile
 
 class Store(models.Model):
+    """
+    Store model contains information about the user's store
+    it is only shown when the varible is_activate become True
+    """
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
@@ -27,13 +31,23 @@ class Store(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        """
+        Return the absolute URL path of the shop
+        """
         return '/%s/' % (self.slug)
 
     def save(self, *args, **kwargs):
+        """
+        Save the shop in Database
+        """
         self.slug = self.slug or slugify(self.name)
         super().save(*args, **kwargs)
 
 class StoreAdmin(models.Model):
+    """
+    Make the connection of the shop and user
+    One user can have more than one shops
+    """
     user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE, blank=True, null=True)
     store = models.ForeignKey(Store, related_name='store', on_delete=models.CASCADE, blank=True, null=True)
 
@@ -41,6 +55,9 @@ class StoreAdmin(models.Model):
         return self.user.user.username + ": " + self.store.name
 
 class Category(models.Model):
+    """
+    Categories are a specific tab in which there are groups products. Each shop can have multiple categories
+    """
     store = models.ForeignKey(Store, related_name='categories', on_delete=models.CASCADE, blank=True, null=True)
     parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
@@ -57,9 +74,15 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
+        """
+        Returns the absolute url of a specific catefory
+        """
         return '/%s/' % (self.slug)
 
 class Product(models.Model):
+    """
+    There are all the information about the products. Products are inherited from categories.
+    """
     store = models.ForeignKey(Store, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
@@ -81,6 +104,9 @@ class Product(models.Model):
         return self.title
     
     def make_thumbnail(self, image, size=(300, 200)):
+        """
+        Resize the image to a specific size
+        """
         img = Image.open(image)
         img.convert('RGB')
         img.thumbnail(size)
@@ -92,9 +118,15 @@ class Product(models.Model):
         return thumbnail
 
     def get_absolute_url(self):
+        """
+        Return the absolute url of a product
+        """
         return '/%s/%s/' % (self.category.slug, self.slug)
 
     def get_thumbnail(self):
+        """
+        Return the thumbnail of a product
+        """
         if self.thumbnail:
             return self.thumbnail.url
         else:
@@ -106,6 +138,9 @@ class Product(models.Model):
                 return ''
 
     def get_rating(self):
+        """
+        Return the ratings of the product
+        """
         total = sum(int(review['stars']) for review in self.reviews.values())
 
         if self.reviews.count() > 0:
@@ -135,6 +170,9 @@ class Product(models.Model):
 #         super().save(*args, **kwargs)
 
 class ProductReview(models.Model):
+    """
+    There are reviews of the products containing content and rates 
+    """
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
 

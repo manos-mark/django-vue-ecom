@@ -102,6 +102,7 @@
 
         <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
         <script>
+            //Update the value of the cart if add or cancel a product 
             var store = new Vuex.Store({
                 state: {
                     numItems: {{ cart.get_total_length }},

@@ -1,6 +1,10 @@
 from django.db import models
 
 class Coupon(models.Model):
+    """
+    Coupon model
+    Set a discount of a product using a unique string
+    """
     code = models.CharField(max_length=50, unique=True)
     value = models.IntegerField()
     active = models.BooleanField(default=True)
@@ -8,9 +12,16 @@ class Coupon(models.Model):
     num_used = models.IntegerField(default=0)
 
     def __str__(self):
+        """
+        Returns the coupon's code
+        """
         return self.code
 
     def can_use(self):
+        """
+        Check if the coupon can be used
+        If it is activated then you can have a discount, else you have no discount
+        """
         is_active = True
 
         if self.active == False:
@@ -22,6 +33,9 @@ class Coupon(models.Model):
         return is_active
 
     def use(self):
+        """
+        Updates the status of the coupon (decreases the expiration)
+        """
         self.num_used += 1
         self.num_available -= 1
                 
