@@ -3,9 +3,9 @@
 {% block title %}Welcome | {% endblock title %}
 
 {% block content %}
-
+    
     <h1 class="title has-text-centered">Shops</h1>
-    {% with stores as stores %}
+    {% with stores=stores owned_stores=owned_stores %}
         {% include "parts/store_list.html" %}
     {% endwith %}
 

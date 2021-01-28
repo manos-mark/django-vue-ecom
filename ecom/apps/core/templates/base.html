@@ -75,8 +75,12 @@
         </nav>
 
         <section class="section">
-            {% block content %}
-            {% endblock %}
+            <div class="columns">
+                <div class="column is-10 is-offset-1">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
         </section>
 
         {% include 'parts/newsletter.html' %}

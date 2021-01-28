@@ -5,7 +5,7 @@
                 <div class="card-image">
                     <figure class="image 3by2">
                         {% if product.image %}
-                            <img src="{{ product.image.url }}">
+                            <img src="{{ product.get_thumbnail }}">
                         {% endif %}
                     </figure>
                 </div>

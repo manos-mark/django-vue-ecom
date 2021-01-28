@@ -21,7 +21,7 @@
 
     {% if category.children.all %}
         <hr>
-        <h1 class="title">See products from other categories</h1>   
+        <h1 class="title">Products from other categories</h1>   
         {% with category.children.all as categories %}
             {% include "parts/category_list.html" %}
         {% endwith %}

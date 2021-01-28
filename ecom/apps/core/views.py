@@ -8,6 +8,7 @@ def frontpage(request):
     featured_categories = Category.objects.filter(is_featured=True)
     popular_products = Product.objects.all().order_by('-num_visits')[0:4]
     recently_viewed_products = Product.objects.all().order_by('-last_visit')[0:4]
+    owned_stores = Store.objects.filter(id=request.user.id)
 
     context = {
         'stores': stores,
@@ -15,6 +16,7 @@ def frontpage(request):
         'featured_categories': featured_categories,
         'popular_products': popular_products,
         'recently_viewed_products': recently_viewed_products,
+        'owned_stores': owned_stores
     }
 
     return render(request, 'frontpage.html', context)
