@@ -17,7 +17,6 @@ class Store(models.Model):
     zipcode = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
 
-
     date_added = models.DateTimeField(auto_now_add=True)
     num_visits = models.IntegerField(default=0)
     last_visit = models.DateTimeField(blank=True, null=True)
@@ -35,11 +34,11 @@ class Store(models.Model):
         super().save(*args, **kwargs)
 
 class StoreAdmin(models.Model):
-    user = models.ForeignKey(Userprofile, related_name='userprofile', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE, blank=True, null=True)
     store = models.ForeignKey(Store, related_name='store', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.user.user.username
+        return self.user.user.username + ": " + self.store.name
 
 class Category(models.Model):
     store = models.ForeignKey(Store, related_name='categories', on_delete=models.CASCADE, blank=True, null=True)
@@ -62,7 +61,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     store = models.ForeignKey(Store, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
@@ -114,26 +113,26 @@ class Product(models.Model):
         else: 
             return 0
     
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+# class ProductImage(models.Model):
+#     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
 
-    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
+#     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+#     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
-        img.convert('RGB')
-        img.thumbnail(size)
+#     def make_thumbnail(self, image, size=(300, 200)):
+#         img = Image.open(image)
+#         img.convert('RGB')
+#         img.thumbnail(size)
         
-        thumb_io = BytesIO()
-        img.save(thumb_io, 'JPEG', quality=85)
+#         thumb_io = BytesIO()
+#         img.save(thumb_io, 'JPEG', quality=85)
 
-        thumbnail = File(thumb_io, name=image.name)
-        return thumbnail
+#         thumbnail = File(thumb_io, name=image.name)
+#         return thumbnail
 
-    def save(self, *args, **kwargs):
-        self.thumbnail = self.make_thumbnail(self.image)
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         self.thumbnail = self.make_thumbnail(self.image)
+#         super().save(*args, **kwargs)
 
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)

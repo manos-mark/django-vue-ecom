@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Product, Store, StoreAdmin
 
+from django.contrib.auth.models import User
 from apps.userprofile.models import Userprofile
 from apps.coupon.models import Coupon
 from apps.cart.cart import Cart
@@ -148,9 +149,7 @@ def api_create_store(request):
         image = request.FILES.get('image')
     )
     
-
-    # TODO: fix id (pernei lathos xrhsth)
-    user = get_object_or_404(Userprofile, id=request.user.id)
+    user = get_object_or_404(User, id=request.user.id)
     store_admin = StoreAdmin(store=store, user=user)
 
     store.save()
