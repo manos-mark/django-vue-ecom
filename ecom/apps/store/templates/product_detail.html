@@ -4,7 +4,7 @@
 
 {% block content %}
     <div id="productapp">
-
+        <!-- Navbar -->
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'frontpage' %}">Home</a></li>
@@ -15,7 +15,9 @@
                 <li class="is-active"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.title }}</a></li>
             </ul>
         </nav>
+        <!-- /Navbar -->
 
+        <!-- Product -->
         <img :src="mainImage">
         {% if product.images.all %}
             <hr>
@@ -39,7 +41,7 @@
         {% if product.description %}
             <p>{{ product.description }}</p>
         {% endif %}
-        
+
         {% if product.in_cart %}
             <p>Already in cart!</p>
         {% else %}
@@ -53,6 +55,7 @@
             {% endif %}
         {% endif %}
         
+        <!-- /Product -->
         <br>
 
         <article class="message is-success" v-if="showMessage">
@@ -67,64 +70,20 @@
             </div>
         </article>
 
+        <!-- Related products -->
         <hr>
         <h2 :v-if="related_products.length > 0" class="subtitle">Related products</h2>
         {% with related_products as products %}
             {% include "parts/product_list.html" %}
         {% endwith %}
+        <!-- /Related products -->
 
+        <!-- Reviews -->
         <hr>
-        <h2 class="subtitle">Reviews</h2>
-        <div class="reviews-wrapper">
-            {% for review in product.reviews.all %}
-                <div class="notification space-below">
-                    <p>
-                        <strong>Date: </strong> {{ review.date_added|date:"Y-m-d" }},
-                        <strong>Stars: </strong> {{ review.stars }}
-                    </p>
-                    {{ review.content }}
-                </div>
-            {% empty %}
-                <div class="notification space-below">
-                    No reviews yet.
-                </div>
-            {% endfor %}
-        </div>
-
-        <div class="notification space-below">
-            {% if request.user.is_authenticated %}
-                <form method="post" action=".">
-                    {% csrf_token %}
-
-                    <div class="field">
-                        <label>Stars</label>
-                        <div class="control">
-                            <select name="stars">
-                                {% for i in "12345" %}
-                                    <option selected value={{i}}>{{i}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="field">
-                        <label>Content</label>
-                        <div class="control">
-                            <textarea name="content" class="textarea"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-success">Submit</button>
-                        </div>
-                    </div>
-                    
-                </form>
-            {% else %}
-                <p>Please sign in to add review!</p>
-            {% endif %}
-        </div>
+        {% with reviews=product.reviews.all %}
+            {% include "parts/reviews.html" %}
+        {% endwith %}
+        <!-- /Reviews -->
         
     </div>
 {% endblock %}

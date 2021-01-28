@@ -1,0 +1,48 @@
+<h2 class="subtitle">Reviews</h2>
+<div class="reviews-wrapper">
+  {% for review in reviews %}
+  <div class="notification space-below">
+    <p>
+      <strong>Date: </strong> {{ review.date_added|date:"Y-m-d" }},
+      <strong>Stars: </strong> {{ review.stars }}
+    </p>
+    {{ review.content }}
+  </div>
+  {% empty %}
+  <div class="notification space-below">No reviews yet.</div>
+  {% endfor %}
+</div>
+
+<div class="notification space-below">
+  {% if request.user.is_authenticated %}
+  <form method="post" action=".">
+    {% csrf_token %}
+
+    <div class="field">
+      <label>Stars</label>
+      <div class="control">
+        <select name="stars">
+          {% for i in "12345" %}
+          <option selected value="{{i}}">{{i}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Content</label>
+      <div class="control">
+        <textarea name="content" class="textarea"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <button class="button is-success">Submit</button>
+      </div>
+    </div>
+  </form>
+  {% else %}
+  <p>Please sign in to add review!</p>
+  {% endif %}
+</div>
