@@ -39,85 +39,17 @@
         {% if product.description %}
             <p>{{ product.description }}</p>
         {% endif %}
-
-        {% if product.variants.all %}
-            <h2 class="subtitle">Add to cart</h2>
-            <div class="columns">
-                <div class="column is-6">
-                    <table class="table is-fullwidth">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <figure class="image is-48x48">
-                                        {% if product.get_thumbnail %}
-                                            <img src="{{ product.get_thumbnail }}" alt="">
-                                        {% endif %}
-                                    </figure>
-                                </td>
-                                <td>
-                                    <a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.title }}</a>
-                                </td>
-                                <td>
-                                    {% if product.in_cart %}
-                                        <p>Already in cart!</p>
-                                    {% else %}
-                                        {% if product.num_available > 0 %}
-                                        <!-- TODO: check if the product is availabe -->
-                                        <button @click="addToCart({{ product.id }})"
-                                            class="button is-success"
-                                            >Add to cart</button>
-                                        {% else %}
-                                        <p>The product is out of stock!</p>
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                            </tr>
-
-                            {% for variant in product.variants.all %}
-                                <tr>
-                                    <td>
-                                        <figure class="image is-48x48">
-                                            {% if variant.get_thumbnail %}
-                                                <img src="{{ variant.get_thumbnail }}" alt="">
-                                            {% endif %}
-                                        </figure>
-                                    </td>
-                                    <td>
-                                        <a href="{% url 'product_detail' variant.category.slug variant.slug %}">{{ variant.title }}</a>
-                                    </td>
-                                    <td>
-                                        {% if variant.in_cart %}
-                                            <p>Already in cart!</p>
-                                        {% else %}
-                                            {% if variant.num_available > 0 %}
-                                            <!-- TODO: check if the variant is availabe -->
-                                            <button @click="addToCart({{ variant.id }})"
-                                                class="button is-success"
-                                                >Add to cart</button>
-                                            {% else %}
-                                            <p>The product is out of stock!</p>
-                                            {% endif %}
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        
+        {% if product.in_cart %}
+            <p>Already in cart!</p>
         {% else %}
-            {% if product.in_cart %}
-                <p>Already in cart!</p>
+            {% if product.num_available > 0 %}
+            <!-- TODO: check if the product is availabe -->
+            <button @click="addToCart({{ product.id }})"
+                class="button is-success"
+                >Add to cart</button>
             {% else %}
-                {% if product.num_available > 0 %}
-                <!-- TODO: check if the product is availabe -->
-                <button @click="addToCart({{ product.id }})"
-                    class="button is-success"
-                    >Add to cart</button>
-                {% else %}
-                <p>The product is out of stock!</p>
-                {% endif %}
+            <p>The product is out of stock!</p>
             {% endif %}
         {% endif %}
         

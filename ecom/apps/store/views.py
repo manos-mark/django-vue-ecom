@@ -64,12 +64,9 @@ def product_detail(request, category_slug, slug):
         return redirect('product_detail', category_slug=category_slug, slug=slug)
     #
 
-    related_products = list(product.category.products.filter(parent=None).exclude(id=product.id))
+    related_products = list(product.category.products.all().exclude(id=product.id))
     if (len(related_products) >= 3):
         related_products = random.sample(related_products, 3)
-
-    if product.parent:
-        return redirect('product_detail', category_slug=category_slug, slug=product.parent.slug)
 
     imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.thumbnail.url, product.image.url)
     
@@ -93,7 +90,7 @@ def product_detail(request, category_slug, slug):
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
 
-    products = category.products.filter(parent=None)
+    products = category.products.all()
 
     context = {
         'category': category,
