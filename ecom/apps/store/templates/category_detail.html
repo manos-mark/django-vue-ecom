@@ -3,6 +3,7 @@
 {% block title %}{{ category.title }} | {% endblock title %}
 
 {% block content %}
+<div id="categorydetailapp">
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="{% url 'frontpage' %}">Home</a></li>
@@ -13,8 +14,13 @@
         </ul>
     </nav>
 
-    <h1 class="title">{{ category.title }}</h1>
-
+    <div class="level">
+        <h1 class="title level-left">{{ category.title }}</h1>
+        {% if category.store in owned_stores %}
+            <button class="level-right button is-warning is-rounded">Add new product</button>
+        {% endif %}
+    </div>
+    
     {% with products as products %}
         {% include "parts/product_list.html" %}
     {% endwith %}
@@ -26,5 +32,58 @@
             {% include "parts/category_list.html" %}
         {% endwith %}
     {% endif %}
-
+</div>
 {% endblock %}
+
+<!-- {% block scripts %}
+<script>
+    var categorydetailapp = new Vue({
+        el: '#categorydetailapp',
+        delimiters: ['[[', ']]'],
+        store: store,
+        data () {
+            return {
+                
+            }
+        },
+        methods: {
+            addToCart(product_id) {
+                var data = {'product_id': product_id}
+
+                fetch('/api/add_to_cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.showError = false
+                        this.showMessage = true
+                        store.commit('increment', 1)
+                        setTimeout(() => {
+                            this.showMessage = false
+                        }, 2000)
+                    } else {
+                        this.showMessage = false
+                        this.showError = true
+                        setTimeout(() => {
+                            this.showError = false
+                        }, 2000)
+                    }
+                    return response.json()
+                })
+                .thend((data) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
+            }
+        }
+    });
+</script>
+{% endblock scripts %} -->

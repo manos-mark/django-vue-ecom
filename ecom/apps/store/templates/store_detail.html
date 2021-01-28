@@ -3,12 +3,88 @@
 {% block title %}{{ store.name }} | {% endblock title %}
 
 {% block content %}
+<div id="storedetailapp">
+
     <h1 class="title has-text-centered">{{ store.name }}</h1>
     <hr>
-    <h1 class="title">Categories of products</h1>   
+    <div class="level">
+        <h1 class="title level-left">Categories of products</h1>
+        {% if store in owned_stores %}
+        <button class="level-right button is-warning is-rounded" @click="isActive=true">Add new category</button>
+        {% endif %}
+    </div>
 
     {% with categories as categories %}
-        {% include "parts/category_list.html" %}
+    {% include "parts/category_list.html" %}
     {% endwith %}
 
+    <div :class="{ 'is-active': isActive }" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close" @click="isActive=false"></button>
+            </header>
+            <section class="modal-card-body">
+                <!-- Content ... -->
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success">Save changes</button>
+                <button class="button" @click="isActive=false">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    var storedetailapp = new Vue({
+        el: '#storedetailapp',
+        delimiters: ['[[', ']]'],
+        store: store,
+        data: {
+            isActive: false,
+        },
+        methods: {
+            addToCart(product_id) {
+                var data = { 'product_id': product_id }
+
+                fetch('/api/add_to_cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                    .then((response) => {
+                        if (response.status == 200) {
+                            this.showError = false
+                            this.showMessage = true
+                            store.commit('increment', 1)
+                            setTimeout(() => {
+                                this.showMessage = false
+                            }, 2000)
+                        } else {
+                            this.showMessage = false
+                            this.showError = true
+                            setTimeout(() => {
+                                this.showError = false
+                            }, 2000)
+                        }
+                        return response.json()
+                    })
+                    .thend((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error)
+                    })
+            }
+        }
+    });
+</script>
+{% endblock scripts %}

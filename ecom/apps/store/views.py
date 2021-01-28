@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 
 from .models import Product, Category, ProductReview, Store
+from apps.store.utils import get_owned_stores
 
 from apps.cart.cart import Cart
 
@@ -40,10 +41,13 @@ def store_detail(request, slug):
     store.last_visit = datetime.now()
     store.save()
 
+    owned_stores = get_owned_stores(request)
+
     context = {
         'store': store,
         'products': store.products.all(),
         'categories': store.categories.all(),
+        'owned_stores': owned_stores,
     }
 
     return render(request, 'store_detail.html', context)
@@ -70,8 +74,8 @@ def product_detail(request, category_slug, slug):
 
     imagesstring = "{'thumbnail': '%s', 'image': '%s'}," %(product.thumbnail.url, product.image.url)
     
-    for image in product.images.all():
-        imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.thumbnail.url, image.image.url))
+    # for image in product.images.all():
+        # imagesstring += ("{'thumbnail': '%s', 'image': '%s'}," %(image.thumbnail.url, image.image.url))
 
     cart = Cart(request)
     if cart.has_product(product.id):
@@ -89,12 +93,13 @@ def product_detail(request, category_slug, slug):
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
-
     products = category.products.all()
+    owned_stores = get_owned_stores(request)
 
     context = {
         'category': category,
         'products': products,
+        'owned_stores': owned_stores,
     }
 
     return render(request, 'category_detail.html', context)

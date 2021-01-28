@@ -4,23 +4,24 @@
 
 {% block content %}
     
-    <h1 class="title has-text-centered">Shops</h1>
-    {% with stores=stores owned_stores=owned_stores %}
-        {% include "parts/store_list.html" %}
-    {% endwith %}
-
-    <br><hr><br>
+    {% if stores%}
+        <h1 class="title has-text-centered">Shops</h1>
+        {% with stores=stores owned_stores=owned_stores %}
+            {% include "parts/store_list.html" %}
+        {% endwith %}
+    {% endif %}
     
-    <h1 class="title has-text-centered">Featured products</h1>
-    {% with products as products %}
-        {% include "parts/product_list.html" %}
-    {% endwith %}
-
-    <br>
+    {% if products%}
+        <br><hr><br>
+        <h1 class="title has-text-centered">Featured products</h1>
+        {% with products as products %}
+            {% include "parts/product_list.html" %}
+        {% endwith %}
+        
+    {% endif %}
     
-    {% if featured_categories.length > 0 %}
-        <hr>
-        <br>
+    {% if featured_categories %}
+        <br><hr><br>
         <div class="featured-categories">
             <h1 class="title has-text-centered">Featured categories</h2>
             {% for category in featured_categories %}
@@ -32,19 +33,21 @@
             {% endfor %}
         </div>
     {% endif %}
-
-    <br><hr><br>
     
-    <h1 class="title has-text-centered">Popular products</h1>
-    {% with popular_products|slice:":4" as products %}
-        {% include "parts/product_list.html" %}
-    {% endwith %}
+    {% if popular_products %}
+        <br><hr><br>
+        <h1 class="title has-text-centered">Popular products</h1>
+        {% with popular_products|slice:":4" as products %}
+            {% include "parts/product_list.html" %}
+        {% endwith %}
+    {% endif %}
 
-    <br><hr><br>
-
-    <h1 class="title has-text-centered">Recently viewed products</h1>
-    {% with recently_viewed_products|slice:":4" as products %}
-        {% include "parts/product_list.html" %}
-    {% endwith %}
+    {% if recently_viewed_products %}
+        <br><hr><br>
+        <h1 class="title has-text-centered">Recently viewed products</h1>
+        {% with recently_viewed_products|slice:":4" as products %}
+            {% include "parts/product_list.html" %}
+        {% endwith %}
+    {% endif %}
             
 {% endblock %}

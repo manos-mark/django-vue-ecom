@@ -2,6 +2,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from apps.order.views import render_to_pdf
+from django.contrib.auth.models import User
+from apps.store.models import StoreAdmin
 
 
 def decrement_product_quantity(order):
@@ -27,3 +29,13 @@ def send_order_confirmation(order):
         msg.attach(name, pdf, 'application/pdf')
 
     msg.send()
+
+def get_owned_stores(request):
+    owned_stores = []
+    if not request.user.is_anonymous:
+        user = User.objects.get(id=request.user.id)
+        store_admins = StoreAdmin.objects.filter(user=user)
+        
+        for admin in store_admins:
+            owned_stores.append(admin.store)
+    return owned_stores
