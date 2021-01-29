@@ -1,6 +1,7 @@
 import random
 from datetime import datetime
 
+from django.utils.text import slugify
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 
@@ -8,6 +9,8 @@ from .models import Product, Category, ProductReview, Store
 from apps.store.utils import get_owned_stores
 
 from apps.cart.cart import Cart
+
+from .forms import CategoryForm, ProductForm
 
 def search(request):
     """
@@ -57,11 +60,32 @@ def store_detail(request, slug):
 
     owned_stores = get_owned_stores(request)
 
+    categories = store.categories.all()
+    products = store.products.all()
+
+    # if request.method == 'POST':
+    #     form = CategoryForm(request.POST)
+
+    #     if form.is_valid():
+    #         user = form.save()
+
+    #         userprofile = userprofileform.save(commit=False)
+    #         userprofile.user = user
+    #         userprofile.save()
+
+    #         login(request, user)
+    #         return redirect('frontpage')
+    # else:
+    # category_form = None
+    # if store in owned_stores:
+    category_form = CategoryForm(stores=owned_stores)
+
     context = {
         'store': store,
-        'products': store.products.all(),
-        'categories': store.categories.all(),
+        'products': products,
+        'categories': categories,
         'owned_stores': owned_stores,
+        'category_form': category_form,
     }
 
     return render(request, 'store_detail.html', context)
@@ -106,10 +130,16 @@ def product_detail(request, category_slug, slug):
     else:
         product.in_cart = False
 
+    owned_stores = get_owned_stores(request)
+
+    product_form = ProductForm(instance=product, stores=owned_stores)
+
     context = {
         'product': product,
         'imagesstring': imagesstring,
         'related_products': related_products,
+        'owned_stores': owned_stores,
+        'product_form': product_form,
     }
 
     return render(request, 'product_detail.html', context)
@@ -126,10 +156,15 @@ def category_detail(request, slug):
     products = category.products.all()
     owned_stores = get_owned_stores(request)
 
+    category_form = CategoryForm(instance=category, stores=owned_stores)
+    product_form = ProductForm(stores=owned_stores)
+
     context = {
         'category': category,
         'products': products,
         'owned_stores': owned_stores,
+        'category_form': category_form,
+        'product_form': product_form,
     }
 
     return render(request, 'category_detail.html', context)

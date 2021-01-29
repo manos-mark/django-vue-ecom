@@ -79,6 +79,13 @@ class Category(models.Model):
         """
         return '/%s/' % (self.slug)
 
+    def save(self, *args, **kwargs):
+        """
+        Save the category in Database
+        """
+        self.slug = self.slug or slugify(self.title)
+        super().save(*args, **kwargs)
+
 class Product(models.Model):
     """
     There are all the information about the products. Products are inherited from categories.
@@ -147,6 +154,13 @@ class Product(models.Model):
             return total / self.reviews.count()
         else: 
             return 0
+
+    def save(self, *args, **kwargs):
+        """
+        Save the product in Database
+        """
+        self.slug = self.slug or slugify(self.title)
+        super().save(*args, **kwargs)
     
 # class ProductImage(models.Model):
 #     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
