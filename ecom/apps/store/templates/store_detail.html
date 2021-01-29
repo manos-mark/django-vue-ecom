@@ -10,7 +10,7 @@
     <div class="level">
         <h1 class="title level-left">Categories of products</h1>
         {% if store in owned_stores %}
-        <button class="level-right button is-warning is-rounded" @click="isActive=true">Add new category</button>
+        <button class="level-right button is-warning is-rounded" @click="isAddModalActive=true">Add new category</button>
         {% endif %}
     </div>
 
@@ -18,21 +18,24 @@
     {% include "parts/category_list.html" %}
     {% endwith %}
 
-    <div :class="{ 'is-active': isActive }" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Modal title</p>
-                <button class="delete" aria-label="close" @click="isActive=false"></button>
-            </header>
-            <section class="modal-card-body">
-                <!-- Content ... -->
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-success">Save changes</button>
-                <button class="button" @click="isActive=false">Cancel</button>
-            </footer>
-        </div>
+    <div :class="{ 'is-active': isAddModalActive }" class="modal">
+        <form v-on:submit.prevent>
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add a new category</p>
+                    <button class="delete" aria-label="close" @click="isAddModalActive=false"></button>
+                </header>
+                <section class="modal-card-body">
+                    {% csrf_token %}
+                    {{ category_form }}
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button" @click="isAddModalActive=false">Cancel</button>
+                </footer>
+            </div>
+        </form>
     </div>
 
 </div>
@@ -43,47 +46,46 @@
     var storedetailapp = new Vue({
         el: '#storedetailapp',
         delimiters: ['[[', ']]'],
-        store: store,
         data: {
-            isActive: false,
+            isAddModalActive: false,
         },
         methods: {
-            addToCart(product_id) {
-                var data = { 'product_id': product_id }
+            // addToCart(product_id) {
+            //     var data = { 'product_id': product_id }
 
-                fetch('/api/add_to_cart/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                    .then((response) => {
-                        if (response.status == 200) {
-                            this.showError = false
-                            this.showMessage = true
-                            store.commit('increment', 1)
-                            setTimeout(() => {
-                                this.showMessage = false
-                            }, 2000)
-                        } else {
-                            this.showMessage = false
-                            this.showError = true
-                            setTimeout(() => {
-                                this.showError = false
-                            }, 2000)
-                        }
-                        return response.json()
-                    })
-                    .thend((data) => {
-                        console.log(data)
-                    })
-                    .catch((error) => {
-                        console.log('Error ', error)
-                    })
-            }
+            //     fetch('/api/add_to_cart/', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRFToken': '{{ csrf_token }}',
+            //         },
+            //         credentials: 'same-origin',
+            //         body: JSON.stringify(data)
+            //     })
+            //     .then((response) => {
+            //         if (response.status == 200) {
+            //             this.showError = false
+            //             this.showMessage = true
+            //             store.commit('increment', 1)
+            //             setTimeout(() => {
+            //                 this.showMessage = false
+            //             }, 2000)
+            //         } else {
+            //             this.showMessage = false
+            //             this.showError = true
+            //             setTimeout(() => {
+            //                 this.showError = false
+            //             }, 2000)
+            //         }
+            //         return response.json()
+            //     })
+            //     .thend((data) => {
+            //         console.log(data)
+            //     })
+            //     .catch((error) => {
+            //         console.log('Error ', error)
+            //     })
+            // },
         }
     });
 </script>

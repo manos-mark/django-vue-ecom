@@ -159,6 +159,39 @@ def category_detail(request, slug):
     category_form = CategoryForm(instance=category, stores=owned_stores)
     product_form = ProductForm(stores=owned_stores)
 
+    if request.method == 'POST' and request.user.is_authenticated and (category.store in owned_stores):
+        # Create product
+        parent_id = request.POST.get('category')
+        if parent_id:
+            try:
+                parent = get_object_or_404(Category, id=parent_id)
+                title = request.POST.get('title')
+                description = request.POST.get('description')
+                price = float(request.POST.get('price'))
+                is_featured = bool(request.POST.get('is_featured'))
+                image = file(request.POST.get('image'))
+                num_available = int(request.POST.get('num_available'))
+                store = category.store
+                
+                product = Product.objects.create(store=store, title=title, is_featured=is_featured, category=category, description=description, price=price, num_available=num_available)
+
+                product.save()
+                return redirect('product_detail', category_slug=category.slug, slug=product.slug)
+            except Exception as e:
+                raise e
+
+        # Create category
+        if request.POST.get('category'):
+            parent = request.POST.get('parent')
+            print("Create category")
+            # try:
+        #     form = CategoryForm(instance=category)
+        #     if form.is_valid():
+        #         print(request)
+        # except:
+        #     print("Category form not valid")
+
+
     context = {
         'category': category,
         'products': products,

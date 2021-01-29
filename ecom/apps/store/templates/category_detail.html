@@ -17,11 +17,14 @@
     <div class="level">
         <h1 class="title level-left">{{ category.title }}</h1>
         {% if category.store in owned_stores %}
-            <button class="level-right button is-warning is-rounded">Add new product</button>
+            <div class="level-right">
+                <button class="level-item button is-warning is-rounded" @click="isAddProductModalActive=true">Add new product</button>
+                <button class="level-item button is-warning is-rounded" @click="isEditCategoryModalActive=true">Edit category</button>
+            </div>
         {% endif %}
     </div>
     
-    {% with products as products %}
+    {% with products=products owned_stores=owned_stores %}
         {% include "parts/product_list.html" %}
     {% endwith %}
 
@@ -32,58 +35,108 @@
             {% include "parts/category_list.html" %}
         {% endwith %}
     {% endif %}
+
+    <div :class="{ 'is-active': isEditCategoryModalActive }" class="modal">
+        <form v-on:submit.prevent>
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Edit category</p>
+                    <button class="delete" aria-label="close" @click="isEditCategoryModalActive=false"></button>
+                </header>
+                <section class="modal-card-body">
+                    {% csrf_token %}
+                    {{ category_form }}
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button" @click="isEditCategoryModalActive=false">Cancel</button>
+                </footer>
+            </div>
+        </form>
+    </div>
+
+    <div :class="{ 'is-active': isAddProductModalActive }" class="modal">
+        <form v-on:submit.prevent>
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add a new product</p>
+                    <button class="delete" aria-label="close" @click="isAddProductModalActive=false"></button>
+                </header>
+                <section class="modal-card-body">
+                    {% csrf_token %}
+                    {{ product_form }}
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" @click="createProduct()">Save changes</button>
+                    <button class="button" @click="isAddProductModalActive=false">Cancel</button>
+                </footer>
+            </div>
+        </form>
+    </div>
+
 </div>
 {% endblock %}
 
-<!-- {% block scripts %}
+{% block scripts %}
 <script>
     var categorydetailapp = new Vue({
         el: '#categorydetailapp',
         delimiters: ['[[', ']]'],
-        store: store,
         data () {
             return {
-                
+                isEditCategoryModalActive: false,
+                isAddProductModalActive: false,
             }
         },
+        mounted () {
+            this.isEdit()
+        },
         methods: {
-            addToCart(product_id) {
-                var data = {'product_id': product_id}
+            isEdit: function() {
+                if (window.location.href.indexOf("edit") > -1) { 
+                    this.isEditCategoryModalActive = (new URL(document.location)).searchParams.get("edit");
+                } else {
+                    this.isEditCategoryModalActive = false
+                }
+            },
+            createProduct() {
+                console.log('{{ product_form.title.id }}')
+                id = '{{ product_form.title.id }}'
+                console.log(document.getElementById(id).value)
+                var data = new FormData();
+                data.append('image', '{{ product_form.image }}');
+                // data.append('name', this.name);
+                // data.append('email', this.email);
+                // data.append('address', this.address);
+                // data.append('zipcode', this.zipcode)
+                // data.append('phone', this.phone)
 
-                fetch('/api/add_to_cart/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    if (response.status == 200) {
-                        this.showError = false
-                        this.showMessage = true
-                        store.commit('increment', 1)
-                        setTimeout(() => {
-                            this.showMessage = false
-                        }, 2000)
-                    } else {
-                        this.showMessage = false
-                        this.showError = true
-                        setTimeout(() => {
-                            this.showError = false
-                        }, 2000)
-                    }
-                    return response.json()
-                })
-                .thend((data) => {
-                    console.log(data)
-                })
-                .catch((error) => {
-                    console.log('Error ', error )
-                })
+                // if (this.isFormValid()) {
+                //     fetch('/api/create_store/', {
+                //         method: 'POST',
+                //         headers: {
+                //             // 'Content-Type': 'application/json',
+                //             'X-CSRFToken': '{{ csrf_token }}',
+                //         },
+                //         credentials: 'same-origin',
+                //         body: data
+                //     })
+                //     .then((response) => {
+                //         if (response.status == 200) {
+                //             window.location.href = "/"
+                //         }
+                //     })
+                //     .then((data) => {
+                //         console.log(data)
+                //     })
+                //     .catch((error) => {
+                //         console.log('Error ', error )
+                //     })
+                // }
             }
         }
     });
 </script>
-{% endblock scripts %} -->
+{% endblock scripts %}

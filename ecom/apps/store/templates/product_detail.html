@@ -19,16 +19,6 @@
 
         <!-- Product -->
         <img :src="mainImage">
-        {% if product.images.all %}
-            <hr>
-            <div class="columns">
-                <div class="column is-2" v-for="image in images">
-                    <figure class="image is-128x128">
-                        <img :src="image.thumbnail" @click="changeMainImage(image.image)">
-                    </figure>
-                </div>
-            </div>
-        {% endif %}
         <hr>
         <h1 class="title">{{ product.title }}</h1>
         <h2 class="subtitle">
@@ -42,18 +32,21 @@
             <p>{{ product.description }}</p>
         {% endif %}
 
-        {% if product.in_cart %}
+        <!-- {% if product.in_cart %}
             <p>Already in cart!</p>
-        {% else %}
-            {% if product.num_available > 0 %}
+        {% else %} -->
+        {% if product.num_available > 0 %}
             <!-- TODO: check if the product is availabe -->
-            <button @click="addToCart({{ product.id }})"
-                class="button is-success"
-                >Add to cart</button>
-            {% else %}
-            <p>The product is out of stock!</p>
+            <button @click="addToCart({{ product.id }})" class="button is-success">Add to cart</button>
+            {% if product.store in owned_stores %}
+                <div class="">
+                    <button class="button is-danger is-outlined" @click="isEditProductModalActive=true">Edit product</button>
+                </div>
             {% endif %}
+        {% else %}
+            <p>The product is out of stock!</p>
         {% endif %}
+        <!-- {% endif %} -->
         
         <!-- /Product -->
         <br>
@@ -85,6 +78,26 @@
         {% endwith %}
         <!-- /Reviews -->
         
+        <div :class="{ 'is-active': isEditProductModalActive }" class="modal">
+            <form v-on:submit.prevent>
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Edit product</p>
+                        <button class="delete" aria-label="close" @click="isEditProductModalActive=false"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        {% csrf_token %}
+                        {{ product_form }}
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success">Save changes</button>
+                        <button class="button" @click="isEditProductModalActive=false">Cancel</button>
+                    </footer>
+                </div>
+            </form>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -96,6 +109,7 @@
         store: store,
         data () {
             return {
+                isEditProductModalActive: false,
                 related_products: '{{ related_products }}',
                 showMessage: false,
                 showError: false,
@@ -104,9 +118,16 @@
                 num_available: '{{ product }},'
             }
         },
+        mounted () {
+            this.isEdit()
+        },
         methods: {
-            changeMainImage(image){
-                this.mainImage = image
+            isEdit: function() {
+                if (window.location.href.indexOf("edit") > -1) { 
+                    this.isEditProductModalActive = (new URL(document.location)).searchParams.get("edit");
+                } else {
+                    this.isEditProductModalActive = false
+                }
             },
             addToCart(product_id) {
                 var data = {'product_id': product_id}

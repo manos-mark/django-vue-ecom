@@ -26,6 +26,10 @@
                 <footer class="card-footer">
                     <a href="{% url 'category_detail' category.slug %}" 
                         class="card-footer-item button is-primary is-outlined">View</a>
+                    {% if category.store in owned_stores %}
+                    <a href="{% url 'category_detail' category.slug %}?edit=true" 
+                        class="card-footer-item button is-danger is-outlined">Edit</a>
+                    {% endif %}
                 </footer>
             </div>
         </div>
