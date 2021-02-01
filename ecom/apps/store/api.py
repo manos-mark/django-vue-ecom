@@ -8,15 +8,17 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from .models import Product, Store, StoreAdmin
 
-from django.contrib.auth.models import User
+from apps.store import utils
 from apps.userprofile.models import Userprofile
 from apps.coupon.models import Coupon
 from apps.cart.cart import Cart
 from apps.order.utils import checkout
 from apps.order.models import Order
+from apps.store.models import Category
 
 def api_create_checkout_session(request):
     data = json.loads(request.body)
@@ -156,3 +158,62 @@ def api_create_store(request):
     store_admin.save()
 
     return redirect('frontpage')
+
+@csrf_exempt
+@login_required
+def api_create_product(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        product = None
+        try:
+            category_id = request.POST.get('category')
+            category = get_object_or_404(Category, id=category_id)
+            owned_stores = utils.get_owned_stores(request)
+
+            if category.store in owned_stores:
+                title = request.POST.get('title')
+                description = request.POST.get('description')
+                price = float(request.POST.get('price'))
+                is_featured = False if request.POST.get('is_featured') == 'false' else True
+                image = request.FILES.get('image')
+                num_available = int(request.POST.get('num_available'))
+                store = category.store
+                
+                product = Product(store=store, title=title, is_featured=is_featured, category=category, description=description, price=price, num_available=num_available, image=image)
+
+                product.thumbnail = product.make_thumbnail(product.image)
+
+                product.save()
+                return redirect('product_detail', category_slug=category.slug, slug=product.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+@csrf_exempt
+@login_required
+def api_edit_product(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        product = get_object_or_404(Product, id=request.POST.get('id'))
+
+        try:
+            category_id = request.POST.get('category')
+            product.category = get_object_or_404(Category, id=category_id)
+            owned_stores = utils.get_owned_stores(request)
+
+            if product.category.store in owned_stores:
+                product.title = request.POST.get('title')
+                product.description = request.POST.get('description')
+                product.price = float(request.POST.get('price'))
+                product.is_featured = False if request.POST.get('is_featured') == 'false' else True
+                product.num_available = int(request.POST.get('num_available'))
+                
+                if request.FILES.get('image'):
+                    product.image = request.FILES.get('image')
+                    product.thumbnail = product.make_thumbnail(product.image)
+
+                product.save()
+                return redirect('product_detail', category_slug=product.category.slug, slug=product.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)

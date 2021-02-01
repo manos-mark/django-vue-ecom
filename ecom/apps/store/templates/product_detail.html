@@ -91,7 +91,7 @@
                         {{ product_form }}
                     </section>
                     <footer class="modal-card-foot">
-                        <button class="button is-success">Save changes</button>
+                        <button class="button is-success" @click="editProduct()">Save changes</button>
                         <button class="button" @click="isEditProductModalActive=false">Cancel</button>
                     </footer>
                 </div>
@@ -114,14 +114,81 @@
                 showMessage: false,
                 showError: false,
                 mainImage: '{{ product.image.url }}',
-                images: [{{ imagesstring|safe }}],
-                num_available: '{{ product }},'
+                // images: [{{ imagesstring|safe }}],
+                num_available: '{{ product.num_available }}',
+                image: '{{ product.image }}',
+                category: '{{ product.category.id }}',
+                title: '{{ product.title }}',
+                description: '{{ product.description }}',
+                price: '{{ product.price }}',
+                is_featured: '{{ product.is_featured }}',
             }
         },
         mounted () {
             this.isEdit()
         },
         methods: {
+            isFormValid() {
+                this.errors = [];
+                for (var key of Object.keys(this._data)) {
+                    if (this._data[key] === '') {
+                        this.errors.push(key)
+                    }
+                }
+
+                if (this.errors.length != 0) {
+                    return false
+                }
+                return true
+            },
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                
+                if (!files.length) {
+                    this.errors.push('image')
+                    return;
+                }
+                
+                if (this.errors.includes('image')) {
+                    // TODO: hide error status when image is uploaded successfully
+                    delete this.errors['image']
+                }
+                this.image = files[0];
+            },
+            editProduct() {
+                var data = new FormData()
+                data.append('id', '{{ product.id }}')
+                data.append('image', this.image)
+                data.append('category', this.category)
+                data.append('title', this.title)
+                data.append('description', this.description)
+                data.append('price', this.price)
+                data.append('is_featured', this.is_featured)
+                data.append('num_available', this.num_available)
+
+                // if (this.isFormValid()) {
+                    fetch('/api/edit_product/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: data
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+                            window.location.href = response.url
+                        }
+                    })
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
+                // }
+            },
             isEdit: function() {
                 if (window.location.href.indexOf("edit") > -1) { 
                     this.isEditProductModalActive = (new URL(document.location)).searchParams.get("edit");
@@ -158,7 +225,7 @@
                     }
                     return response.json()
                 })
-                .thend((data) => {
+                .then((data) => {
                     console.log(data)
                 })
                 .catch((error) => {

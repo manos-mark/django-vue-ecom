@@ -29,7 +29,7 @@ from apps.order.views import admin_order_pdf
 from apps.store.views import product_detail, category_detail, search, store_detail
 
 from apps.newsletter.api import api_add_subscriber
-from apps.store.api import api_add_to_cart, api_remove_from_cart, api_create_checkout_session, api_create_store
+from apps.store.api import api_add_to_cart, api_remove_from_cart, api_create_checkout_session, api_create_store, api_create_product, api_edit_product
 from apps.coupon.api import api_can_use
 
 from .sitemaps import StaticViewSitemap, CategorySitemap, ProductSitemap
@@ -63,6 +63,8 @@ urlpatterns = [
     path('api/remove_from_cart/', api_remove_from_cart, name='api_remove_from_cart'),
     path('api/add_subscriber/', api_add_subscriber, name="api_add_subscriber"),
     path('api/create_store/', api_create_store, name="api_create_store"),
+    path('api/create_product/', api_create_product, name="api_create_product"),
+    path('api/edit_product/', api_edit_product, name="api_edit_product"),
 
     # Store
     path('store/<slug:slug>/', store_detail, name='store_detail'),

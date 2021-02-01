@@ -54,3 +54,4 @@ def get_owned_stores(request):
         for admin in store_admins:
             owned_stores.append(admin.store)
     return owned_stores
+

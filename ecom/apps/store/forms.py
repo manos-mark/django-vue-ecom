@@ -27,23 +27,56 @@ class CategoryForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['slug', 'store']
 
-class ProductForm(forms.ModelForm):
+class AddProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-
         stores = kwargs.pop('stores')
-
-        super(ProductForm, self).__init__(*args, **kwargs)
-
-        for key in self.fields:                
+        super(AddProductForm, self).__init__(*args, **kwargs)
+        
+        for key in self.fields:              
             self.fields[key].widget.attrs['class'] = 'input'
+            # self.fields[key].widget.attrs['v-bind:class'] = "{ 'is-danger': errors.includes("+key+") }"
+            if key != 'image':
+                self.fields[key].widget.attrs['v-model'] = 'product.'+key
 
-        self.fields['is_featured'].widget.attrs['class'] = 'radio'
+        self.fields['is_featured'].widget.attrs['class'] = 'checkbox'
+
         self.fields['image'].widget.attrs['class'] = 'file'
+        self.fields['image'].widget.attrs['accepts'] = '.jpg, .jpeg, .png'
+        self.fields['image'].widget.attrs['v-on:change'] = 'onProductFileChange'
 
         # self.fields['store'].choices = [(store.id, str(store)) for store in stores] 
        
         categories = Category.objects.filter(store__in=stores)
         self.fields['category'].choices = [(category.id, str(category)) for category in categories]
+
+    class Meta: 
+        model = Product
+        fields = '__all__'
+        exclude = ['slug', 'last_visit', 'thumbnail', 'num_visits', 'store']
+
+class EditProductForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        stores = kwargs.pop('stores')
+        super(EditProductForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:   
+            print("!!!!!! ", key)           
+            self.fields[key].widget.attrs['class'] = 'input'
+            # self.fields[key].widget.attrs['v-bind:class'] = "{ 'is-danger': errors.includes("+key+") }"
+            if key != 'image':
+                self.fields[key].widget.attrs['v-model'] = key
+
+        self.fields['is_featured'].widget.attrs['class'] = 'checkbox'
+
+        self.fields['image'].widget.attrs['class'] = 'file'
+        self.fields['image'].widget.attrs['accepts'] = '.jpg, .jpeg, .png'
+        self.fields['image'].widget.attrs['v-on:change'] = 'onFileChange'
+
+        # self.fields['store'].choices = [(store.id, str(store)) for store in stores] 
+       
+        categories = Category.objects.filter(store__in=stores)
+        self.fields['category'].choices = [(category.id, str(category)) for category in categories]
+        
 
     class Meta: 
         model = Product

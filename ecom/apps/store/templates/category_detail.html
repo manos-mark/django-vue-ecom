@@ -49,7 +49,7 @@
                     {{ category_form }}
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success">Save changes</button>
+                    <button class="button is-success" @click="editCategory()">Save changes</button>
                     <button class="button" @click="isEditCategoryModalActive=false">Cancel</button>
                 </footer>
             </div>
@@ -86,8 +86,18 @@
         delimiters: ['[[', ']]'],
         data () {
             return {
+                errors: [],
                 isEditCategoryModalActive: false,
                 isAddProductModalActive: false,
+                product: {
+                    image: '',
+                    category: '{{ category.id }}',
+                    title: '',
+                    description: '',
+                    price: 0,
+                    is_featured: false,
+                    num_available: 1,
+                }
             }
         },
         mounted () {
@@ -101,40 +111,68 @@
                     this.isEditCategoryModalActive = false
                 }
             },
-            createProduct() {
-                console.log('{{ product_form.title.id }}')
-                id = '{{ product_form.title.id }}'
-                console.log(document.getElementById(id).value)
-                var data = new FormData();
-                data.append('image', '{{ product_form.image }}');
-                // data.append('name', this.name);
-                // data.append('email', this.email);
-                // data.append('address', this.address);
-                // data.append('zipcode', this.zipcode)
-                // data.append('phone', this.phone)
+            isFormValid() {
+                this.errors = [];
+                for (var key of Object.keys(this._data)) {
+                    if (this._data[key] === '') {
+                        this.errors.push(key)
+                    }
+                }
 
-                // if (this.isFormValid()) {
-                //     fetch('/api/create_store/', {
-                //         method: 'POST',
-                //         headers: {
-                //             // 'Content-Type': 'application/json',
-                //             'X-CSRFToken': '{{ csrf_token }}',
-                //         },
-                //         credentials: 'same-origin',
-                //         body: data
-                //     })
-                //     .then((response) => {
-                //         if (response.status == 200) {
-                //             window.location.href = "/"
-                //         }
-                //     })
-                //     .then((data) => {
-                //         console.log(data)
-                //     })
-                //     .catch((error) => {
-                //         console.log('Error ', error )
-                //     })
-                // }
+                if (this.errors.length != 0) {
+                    return false
+                }
+                return true
+            },
+            onProductFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                
+                if (!files.length) {
+                    this.errors.push('image')
+                    return;
+                }
+                
+                if (this.errors.includes('image')) {
+                    // TODO: hide error status when image is uploaded successfully
+                    delete this.errors['image']
+                }
+                this.product.image = files[0];
+            },
+            createProduct() {
+                var data = new FormData()
+                data.append('image', this.product.image)
+                data.append('category', this.product.category)
+                data.append('title', this.product.title)
+                data.append('description', this.product.description)
+                data.append('price', this.product.price)
+                data.append('is_featured', this.product.is_featured)
+                data.append('num_available', this.product.num_available)
+
+                if (this.isFormValid()) {
+                    fetch('/api/create_product/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: data
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+                            window.location.href = response.url
+                        }
+                    })
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
+                }
+            },
+            editCategory() {
+
             }
         }
     });

@@ -6,11 +6,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 
 from .models import Product, Category, ProductReview, Store
-from apps.store.utils import get_owned_stores
+from apps.store import utils
 
 from apps.cart.cart import Cart
 
-from .forms import CategoryForm, ProductForm
+from .forms import CategoryForm, AddProductForm, EditProductForm
 
 def search(request):
     """
@@ -58,26 +58,11 @@ def store_detail(request, slug):
     store.last_visit = datetime.now()
     store.save()
 
-    owned_stores = get_owned_stores(request)
+    owned_stores = utils.get_owned_stores(request)
 
     categories = store.categories.all()
     products = store.products.all()
 
-    # if request.method == 'POST':
-    #     form = CategoryForm(request.POST)
-
-    #     if form.is_valid():
-    #         user = form.save()
-
-    #         userprofile = userprofileform.save(commit=False)
-    #         userprofile.user = user
-    #         userprofile.save()
-
-    #         login(request, user)
-    #         return redirect('frontpage')
-    # else:
-    # category_form = None
-    # if store in owned_stores:
     category_form = CategoryForm(stores=owned_stores)
 
     context = {
@@ -130,9 +115,9 @@ def product_detail(request, category_slug, slug):
     else:
         product.in_cart = False
 
-    owned_stores = get_owned_stores(request)
+    owned_stores = utils.get_owned_stores(request)
 
-    product_form = ProductForm(instance=product, stores=owned_stores)
+    product_form = EditProductForm(instance=product, stores=owned_stores)
 
     context = {
         'product': product,
@@ -154,43 +139,10 @@ def category_detail(request, slug):
     """
     category = get_object_or_404(Category, slug=slug)
     products = category.products.all()
-    owned_stores = get_owned_stores(request)
+    owned_stores = utils.get_owned_stores(request)
 
     category_form = CategoryForm(instance=category, stores=owned_stores)
-    product_form = ProductForm(stores=owned_stores)
-
-    if request.method == 'POST' and request.user.is_authenticated and (category.store in owned_stores):
-        # Create product
-        parent_id = request.POST.get('category')
-        if parent_id:
-            try:
-                parent = get_object_or_404(Category, id=parent_id)
-                title = request.POST.get('title')
-                description = request.POST.get('description')
-                price = float(request.POST.get('price'))
-                is_featured = bool(request.POST.get('is_featured'))
-                image = file(request.POST.get('image'))
-                num_available = int(request.POST.get('num_available'))
-                store = category.store
-                
-                product = Product.objects.create(store=store, title=title, is_featured=is_featured, category=category, description=description, price=price, num_available=num_available)
-
-                product.save()
-                return redirect('product_detail', category_slug=category.slug, slug=product.slug)
-            except Exception as e:
-                raise e
-
-        # Create category
-        if request.POST.get('category'):
-            parent = request.POST.get('parent')
-            print("Create category")
-            # try:
-        #     form = CategoryForm(instance=category)
-        #     if form.is_valid():
-        #         print(request)
-        # except:
-        #     print("Category form not valid")
-
+    product_form = AddProductForm(stores=owned_stores)
 
     context = {
         'category': category,
