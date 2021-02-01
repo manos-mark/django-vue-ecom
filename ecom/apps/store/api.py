@@ -267,3 +267,45 @@ def api_edit_category(request):
 
         except Exception as e:
             return HttpResponseBadRequest(e)
+
+@csrf_exempt
+@login_required
+def api_delete_category(request):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+
+        try:
+            data = json.loads(request.body)
+
+            category_id = data['category_id']
+            category = get_object_or_404(Category, id=category_id)
+
+            store = get_object_or_404(Store, id=category.store.id)
+            owned_stores = utils.get_owned_stores(request)
+
+            if store in owned_stores:
+                category.delete()
+                return redirect('store_detail', slug=category.store.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+@csrf_exempt
+@login_required
+def api_delete_product(request):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+
+        try:
+            data = json.loads(request.body)
+
+            product_id = data['product_id']
+            product = get_object_or_404(Product, id=product_id)
+
+            store = get_object_or_404(Store, id=product.store.id)
+            owned_stores = utils.get_owned_stores(request)
+
+            if store in owned_stores:
+                product.delete()
+                return redirect('category_detail', slug=product.category.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)

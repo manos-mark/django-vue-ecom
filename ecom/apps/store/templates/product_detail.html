@@ -37,12 +37,13 @@
         {% else %} -->
         {% if product.num_available > 0 %}
             <!-- TODO: check if the product is availabe -->
-            <button @click="addToCart({{ product.id }})" class="button is-success">Add to cart</button>
-            {% if product.store in owned_stores %}
-                <div class="">
-                    <button class="button is-danger is-outlined" @click="isEditProductModalActive=true">Edit product</button>
-                </div>
-            {% endif %}
+            <div class="level level-left">
+                <button @click="addToCart({{ product.id }})" class="button is-success">Add to cart</button>
+                {% if product.store in owned_stores %}
+                    <button class="button is-warning is-outlined" @click="isEditProductModalActive=true">Edit</button>
+                    <button class="button is-danger is-outlined" @click="deleteProduct()">Delete</button>
+                {% endif %}
+            </div>
         {% else %}
             <p>The product is out of stock!</p>
         {% endif %}
@@ -231,7 +232,31 @@
                 .catch((error) => {
                     console.log('Error ', error )
                 })
-            }
+            },
+            deleteProduct() {
+                var data = {'product_id': '{{ product.id }}'}
+
+                fetch('/api/delete_product/', {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log(response)
+                    if (response.status == 200) {
+                        window.location.href = response.url
+                    }
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
+            },
         }
     });
 </script>

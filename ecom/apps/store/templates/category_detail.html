@@ -20,6 +20,7 @@
             <div class="level-right">
                 <button class="level-item button is-warning is-rounded" @click="isAddProductModalActive=true">Add new product</button>
                 <button class="level-item button is-warning is-rounded" @click="isEditCategoryModalActive=true">Edit category</button>
+                <button class="level-item button is-danger is-rounded" @click="deleteCategory()">Delete category</button>
             </div>
         {% endif %}
     </div>
@@ -223,6 +224,30 @@
                         console.log('Error ', error )
                     })
                 // }
+            },
+            deleteCategory() {
+                var data = {'category_id': '{{ category.id }}'}
+
+                fetch('/api/delete_category/', {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log(response)
+                    if (response.status == 200) {
+                        window.location.href = response.url
+                    }
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((error) => {
+                    console.log('Error ', error )
+                })
             },
         }
     });
