@@ -229,8 +229,11 @@ def api_create_category(request):
 
             if store in owned_stores:
                 title = request.POST.get('title')
+
                 parent_id = request.POST.get('parent')
-                parent = get_object_or_404(Category, id=parent_id)
+                parent = None
+                if parent_id != '':
+                    parent = get_object_or_404(Category, id=parent_id)
                 ordering = int(request.POST.get('ordering'))
                 is_featured = False if request.POST.get('is_featured') == 'false' else True
                 image = request.FILES.get('image')
@@ -253,8 +256,9 @@ def api_edit_category(request):
         try:
             owned_stores = utils.get_owned_stores(request)
             if category.store in owned_stores:
-                parent_id = int(request.POST.get('parent'))
-                category.parent = get_object_or_404(Category, id=parent_id)
+                parent_id = request.POST.get('parent')
+                if parent_id != '':
+                    category.parent = get_object_or_404(Category, id=parent_id)
                 category.title = request.POST.get('title')
                 category.ordering = int(request.POST.get('ordering'))
                 category.is_featured = False if request.POST.get('is_featured') == 'false' else True

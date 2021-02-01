@@ -83,7 +83,7 @@ class Category(models.Model):
         """
         Save the category in Database
         """
-        self.slug = self.slug or slugify(self.title)
+        self.slug = self.slug or slugify(self.store.name + self.title)
         super().save(*args, **kwargs)
 
 class Product(models.Model):
