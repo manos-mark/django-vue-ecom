@@ -164,7 +164,6 @@ def api_create_store(request):
 def api_create_product(request):
     if request.method == 'POST' and request.user.is_authenticated:
 
-        product = None
         try:
             category_id = request.POST.get('category')
             category = get_object_or_404(Category, id=category_id)
@@ -214,6 +213,57 @@ def api_edit_product(request):
 
                 product.save()
                 return redirect('product_detail', category_slug=product.category.slug, slug=product.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+@csrf_exempt
+@login_required
+def api_create_category(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        try:
+            store_id = int(request.POST.get('store_id'))
+            store = get_object_or_404(Store, id=store_id)
+            owned_stores = utils.get_owned_stores(request)
+
+            if store in owned_stores:
+                title = request.POST.get('title')
+                parent_id = request.POST.get('parent')
+                parent = get_object_or_404(Category, id=parent_id)
+                ordering = int(request.POST.get('ordering'))
+                is_featured = False if request.POST.get('is_featured') == 'false' else True
+                image = request.FILES.get('image')
+                
+                category = Category(parent=parent, store=store, title=title, is_featured=is_featured, ordering=ordering, image=image)
+
+                category.save()
+                return redirect('category_detail', slug=category.slug)
+
+        except Exception as e:
+            return HttpResponseBadRequest(e)
+
+@csrf_exempt
+@login_required
+def api_edit_category(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        category = get_object_or_404(Category, id=request.POST.get('id'))
+
+        try:
+            owned_stores = utils.get_owned_stores(request)
+            if category.store in owned_stores:
+                parent_id = int(request.POST.get('parent'))
+                category.parent = get_object_or_404(Category, id=parent_id)
+                category.title = request.POST.get('title')
+                category.ordering = int(request.POST.get('ordering'))
+                category.is_featured = False if request.POST.get('is_featured') == 'false' else True
+                
+                if request.FILES.get('image'):
+                    category.image = request.FILES.get('image')
+
+                category.save()
+                return redirect('category_detail', slug=category.slug)
 
         except Exception as e:
             return HttpResponseBadRequest(e)

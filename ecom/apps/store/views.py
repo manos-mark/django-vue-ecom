@@ -10,7 +10,7 @@ from apps.store import utils
 
 from apps.cart.cart import Cart
 
-from .forms import CategoryForm, AddProductForm, EditProductForm
+from .forms import AddCategoryForm, EditCategoryForm, AddProductForm, EditProductForm
 
 def search(request):
     """
@@ -63,7 +63,7 @@ def store_detail(request, slug):
     categories = store.categories.all()
     products = store.products.all()
 
-    category_form = CategoryForm(stores=owned_stores)
+    category_form = AddCategoryForm(stores=owned_stores)
 
     context = {
         'store': store,
@@ -141,7 +141,7 @@ def category_detail(request, slug):
     products = category.products.all()
     owned_stores = utils.get_owned_stores(request)
 
-    category_form = CategoryForm(instance=category, stores=owned_stores)
+    category_form = EditCategoryForm(instance=category, stores=owned_stores)
     product_form = AddProductForm(stores=owned_stores)
 
     context = {

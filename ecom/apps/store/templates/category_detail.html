@@ -97,6 +97,13 @@
                     price: 0,
                     is_featured: false,
                     num_available: 1,
+                },
+                category: {
+                    parent: '{{ category.parent.id }}',
+                    title: '{{ category.title }}',
+                    ordering: '{{ category.ordering }}',
+                    is_featured: '{{ category.is_featured }}',
+                    image: '{{ category.image }}',
                 }
             }
         },
@@ -138,6 +145,20 @@
                 }
                 this.product.image = files[0];
             },
+            onCategoryFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                
+                if (!files.length) {
+                    this.errors.push('image')
+                    return;
+                }
+                
+                if (this.errors.includes('image')) {
+                    // TODO: hide error status when image is uploaded successfully
+                    delete this.errors['image']
+                }
+                this.category.image = files[0];
+            },
             createProduct() {
                 var data = new FormData()
                 data.append('image', this.product.image)
@@ -172,8 +193,37 @@
                 }
             },
             editCategory() {
+                var data = new FormData()
+                data.append('id', '{{ category.id }}')
+                data.append('image', this.category.image)
+                data.append('parent', this.category.parent)
+                data.append('title', this.category.title)
+                data.append('is_featured', this.category.is_featured)
+                data.append('ordering', this.category.ordering)
 
-            }
+                // if (this.isFormValid()) {
+                    fetch('/api/edit_category/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: data
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+                            window.location.href = response.url
+                        }
+                    })
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
+                // }
+            },
         }
     });
 </script>

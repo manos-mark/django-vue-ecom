@@ -31,7 +31,7 @@
                     {{ category_form }}
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success">Save changes</button>
+                    <button class="button is-success" @click="createCategory()">Save changes</button>
                     <button class="button" @click="isAddModalActive=false">Cancel</button>
                 </footer>
             </div>
@@ -48,44 +48,61 @@
         delimiters: ['[[', ']]'],
         data: {
             isAddModalActive: false,
+            category: {
+                parent: '{{ category.id }}',
+                title: '',
+                ordering: 0,
+                is_featured: 'false',
+                image: '',
+            }
         },
         methods: {
-            // addToCart(product_id) {
-            //     var data = { 'product_id': product_id }
+            onCategoryFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                
+                if (!files.length) {
+                    // this.errors.push('image')
+                    return;
+                }
+                
+                // if (this.errors.includes('image')) {
+                //     // TODO: hide error status when image is uploaded successfully
+                //     delete this.errors['image']
+                // }
+                this.category.image = files[0];
+            },
+            createCategory() {
+                var data = new FormData()
+                data.append('store_id', '{{ store.id }}')
+                data.append('image', this.category.image)
+                data.append('parent', this.category.parent)
+                data.append('title', this.category.title)
+                data.append('is_featured', this.category.is_featured)
+                data.append('ordering', this.category.ordering)
 
-            //     fetch('/api/add_to_cart/', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'X-CSRFToken': '{{ csrf_token }}',
-            //         },
-            //         credentials: 'same-origin',
-            //         body: JSON.stringify(data)
-            //     })
-            //     .then((response) => {
-            //         if (response.status == 200) {
-            //             this.showError = false
-            //             this.showMessage = true
-            //             store.commit('increment', 1)
-            //             setTimeout(() => {
-            //                 this.showMessage = false
-            //             }, 2000)
-            //         } else {
-            //             this.showMessage = false
-            //             this.showError = true
-            //             setTimeout(() => {
-            //                 this.showError = false
-            //             }, 2000)
-            //         }
-            //         return response.json()
-            //     })
-            //     .thend((data) => {
-            //         console.log(data)
-            //     })
-            //     .catch((error) => {
-            //         console.log('Error ', error)
-            //     })
-            // },
+                // if (this.isFormValid()) {
+                    fetch('/api/create_category/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        credentials: 'same-origin',
+                        body: data
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status == 200) {
+                            window.location.href = response.url
+                        }
+                    })
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => {
+                        console.log('Error ', error )
+                    })
+                // }
+            },
         }
     });
 </script>
