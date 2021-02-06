@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart &#8212; ClickAway 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cart Views" href="../views/cart_views.html" />
+    <link rel="prev" title="Welcome to ClickAway documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-apps.cart.cart">
+<span id="cart"></span><h1>Cart<a class="headerlink" href="#module-apps.cart.cart" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="apps.cart.cart.Cart">
+<em class="property">class </em><code class="sig-prename descclassname">apps.cart.cart.</code><code class="sig-name descname">Cart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cart as an object</p>
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">product</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the cart if the user add a product</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the cart session</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.get_total_cost">
+<code class="sig-name descname">get_total_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.get_total_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receives the total cost of the product contained in the cart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The sum of the product’s prices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.get_total_length">
+<code class="sig-name descname">get_total_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.get_total_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total ammount of ordered products</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The sum of the products that the customers have ordered</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.has_product">
+<code class="sig-name descname">has_product</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">product_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.has_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the card have products</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>product_id</strong> – A unique string id</p>
+</dd>
+</dl>
+<p>:type product_id str
+:return: True if the cart is not empty, False if the cart is empty
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">product_id</span></em>, <em class="sig-param"><span class="n">quantity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrements the quantity of the products according to quantity parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>product_id</strong> – The product that the user would like to remove</p>
+</dd>
+</dl>
+<p>:type str 
+:param quantity: The quantity of this specific product that they want to remove
+:type int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.cart.cart.Cart.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.cart.cart.Cart.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the carts session</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ClickAway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Objects:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cart</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Views:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../views/cart_views.html">Cart Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/order_views.html">Order Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/store_views.html">Store Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/userprofile_views.html">UserProfile Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/newsletter_views.html">Newsletter Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/coupon_views.html">Coupon Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/core_views.html">Core Views</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/cart_models.html">Cart Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/order_models.html">Order Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/store_models.html">Store Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/userprofile_models.html">UserProfile Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/newsletter_models.html">Newsletter Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/coupon_models.html">Coupon Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/core_models.html">Core Model</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to ClickAway documentation!</a></li>
+      <li>Next: <a href="../views/cart_views.html" title="next chapter">Cart Views</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Koutoulakis & Markodimitrakis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/objects/cart_obj.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Store Views &#8212; ClickAway 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="UserProfile Views" href="userprofile_views.html" />
+    <link rel="prev" title="Order Views" href="order_views.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-apps.store.views">
+<span id="store-views"></span><h1>Store Views<a class="headerlink" href="#module-apps.store.views" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="apps.store.views.category_detail">
+<code class="sig-prename descclassname">apps.store.views.</code><code class="sig-name descname">category_detail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">slug</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.views.category_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders specific details of a category
+Params:</p>
+<blockquote>
+<div><p>-slug:[String] A specified id-like of a category</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return:</dt><dd><p>-[Render]: Renders the category_detail.html according to the category has been defined into the slug variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="apps.store.views.product_detail">
+<code class="sig-prename descclassname">apps.store.views.</code><code class="sig-name descname">product_detail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">category_slug</span></em>, <em class="sig-param"><span class="n">slug</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.views.product_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return details about a specific product according to a request
+Params:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>category_slug:[String] A specific ID-like string for a specific category</p></li>
+<li><p>slug: [String]  A specific ID-like string for a specific product</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Return:</dt><dd><p>-[Render]: Return a product_detail.html containing information about a specific product</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="apps.store.views.search">
+<code class="sig-prename descclassname">apps.store.views.</code><code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.views.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>A search ability to find products by providing a string.
+The user’s provided string is filtered in the database. 
+The search is triggered in title and the description
+Return:</p>
+<blockquote>
+<div><p>-[Render] Renders the search.html containing the results</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="apps.store.views.store_detail">
+<code class="sig-prename descclassname">apps.store.views.</code><code class="sig-name descname">store_detail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">slug</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.views.store_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the details of a specific store using as a parameter the slug (stringify id)
+Params:</p>
+<blockquote>
+<div><p>-slug:[String] A string-like id</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return:</dt><dd><p>-[Render] Renders the store_detail.html</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ClickAway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Objects:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../objects/cart_obj.html">Cart</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Views:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cart_views.html">Cart Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="order_views.html">Order Views</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Store Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userprofile_views.html">UserProfile Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="newsletter_views.html">Newsletter Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coupon_views.html">Coupon Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_views.html">Core Views</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/cart_models.html">Cart Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/order_models.html">Order Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/store_models.html">Store Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/userprofile_models.html">UserProfile Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/newsletter_models.html">Newsletter Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/coupon_models.html">Coupon Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/core_models.html">Core Model</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="order_views.html" title="previous chapter">Order Views</a></li>
+      <li>Next: <a href="userprofile_views.html" title="next chapter">UserProfile Views</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Koutoulakis & Markodimitrakis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/views/store_views.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

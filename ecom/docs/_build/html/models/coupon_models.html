@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coupon Model &#8212; ClickAway 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Core Model" href="core_models.html" />
+    <link rel="prev" title="Newsletter Model" href="newsletter_models.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-apps.coupon.models">
+<span id="coupon-model"></span><h1>Coupon Model<a class="headerlink" href="#module-apps.coupon.models" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="apps.coupon.models.Coupon">
+<em class="property">class </em><code class="sig-prename descclassname">apps.coupon.models.</code><code class="sig-name descname">Coupon</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.coupon.models.Coupon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coupon model
+Set a discount of a product using a unique string</p>
+<dl class="py exception">
+<dt id="apps.coupon.models.Coupon.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#apps.coupon.models.Coupon.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="apps.coupon.models.Coupon.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#apps.coupon.models.Coupon.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.active">
+<code class="sig-name descname">active</code><a class="headerlink" href="#apps.coupon.models.Coupon.active" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="apps.coupon.models.Coupon.can_use">
+<code class="sig-name descname">can_use</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.coupon.models.Coupon.can_use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the coupon can be used
+If it is activated then you can have a discount, else you have no discount</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.code">
+<code class="sig-name descname">code</code><a class="headerlink" href="#apps.coupon.models.Coupon.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#apps.coupon.models.Coupon.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.num_available">
+<code class="sig-name descname">num_available</code><a class="headerlink" href="#apps.coupon.models.Coupon.num_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.num_used">
+<code class="sig-name descname">num_used</code><a class="headerlink" href="#apps.coupon.models.Coupon.num_used" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#apps.coupon.models.Coupon.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="apps.coupon.models.Coupon.use">
+<code class="sig-name descname">use</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.coupon.models.Coupon.use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the status of the coupon (decreases the expiration)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.coupon.models.Coupon.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#apps.coupon.models.Coupon.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ClickAway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Objects:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../objects/cart_obj.html">Cart</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Views:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../views/cart_views.html">Cart Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/order_views.html">Order Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/store_views.html">Store Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/userprofile_views.html">UserProfile Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/newsletter_views.html">Newsletter Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/coupon_views.html">Coupon Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/core_views.html">Core Views</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Models:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cart_models.html">Cart Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="order_models.html">Order Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store_models.html">Store Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userprofile_models.html">UserProfile Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="newsletter_models.html">Newsletter Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coupon Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_models.html">Core Model</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="newsletter_models.html" title="previous chapter">Newsletter Model</a></li>
+      <li>Next: <a href="core_models.html" title="next chapter">Core Model</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Koutoulakis & Markodimitrakis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/models/coupon_models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

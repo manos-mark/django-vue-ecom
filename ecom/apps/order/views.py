@@ -13,8 +13,8 @@ def render_to_pdf(template_src, context_dict=({})):
     """
     Parses the order to pdf for the customers
     Params:
-        -template_src: [String] Destination [ath
-        -context_dict: [Dictionary] Order's information
+    \n-template_src: [String] Destination path
+    \n-context_dict: [Dictionary] Order's information
     """
     template = get_template(template_src)
     html = template.render(context_dict)
@@ -28,12 +28,11 @@ def render_to_pdf(template_src, context_dict=({})):
 
 @login_required
 def admin_order_pdf(request, order_id):
-    """
-    Action for the superuser
+    """Action for the superuser
     Params:
-        -order_id:[String] A unique id of the order
+    \n   -order_id:[String] A unique id of the order
     Return:
-        -response: The generated PDF file about the order via request to the front-end
+    \n   -response: The generated PDF file about the order via request to the front-end
     """
     if request.user.is_superuser:
         order = get_object_or_404(Order, pk=order_id)

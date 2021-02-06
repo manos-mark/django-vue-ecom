@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UserProfile Model &#8212; ClickAway 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Newsletter Model" href="newsletter_models.html" />
+    <link rel="prev" title="Store Model" href="store_models.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-apps.userprofile.models">
+<span id="userprofile-model"></span><h1>UserProfile Model<a class="headerlink" href="#module-apps.userprofile.models" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="apps.userprofile.models.Userprofile">
+<em class="property">class </em><code class="sig-prename descclassname">apps.userprofile.models.</code><code class="sig-name descname">Userprofile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">address</span></em>, <em class="sig-param"><span class="n">zipcode</span></em>, <em class="sig-param"><span class="n">place</span></em>, <em class="sig-param"><span class="n">phone</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.userprofile.models.Userprofile" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py exception">
+<dt id="apps.userprofile.models.Userprofile.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="apps.userprofile.models.Userprofile.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.address">
+<code class="sig-name descname">address</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.address" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#apps.userprofile.models.Userprofile.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.phone">
+<code class="sig-name descname">phone</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.phone" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.place">
+<code class="sig-name descname">place</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.place" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a one-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Restaurant.place</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="apps.userprofile.models.Userprofile.zipcode">
+<code class="sig-name descname">zipcode</code><a class="headerlink" href="#apps.userprofile.models.Userprofile.zipcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ClickAway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Objects:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../objects/cart_obj.html">Cart</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Views:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../views/cart_views.html">Cart Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/order_views.html">Order Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/store_views.html">Store Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/userprofile_views.html">UserProfile Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/newsletter_views.html">Newsletter Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/coupon_views.html">Coupon Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/core_views.html">Core Views</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Models:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cart_models.html">Cart Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="order_models.html">Order Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store_models.html">Store Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UserProfile Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="newsletter_models.html">Newsletter Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coupon_models.html">Coupon Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core_models.html">Core Model</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="store_models.html" title="previous chapter">Store Model</a></li>
+      <li>Next: <a href="newsletter_models.html" title="next chapter">Newsletter Model</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Koutoulakis & Markodimitrakis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/models/userprofile_models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

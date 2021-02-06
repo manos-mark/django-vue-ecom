@@ -1,11 +1,9 @@
 from django.conf import settings
 from django.shortcuts import render
-
 from .cart import Cart
 
 def cart_detail(request):
-    """
-    Renders the cart page, getting a list of ordered products to render them 
+    """Renders the cart page, getting a list of ordered products to render them 
     Return:
         -[Render] Renders the cart.html
     """
@@ -28,7 +26,6 @@ def cart_detail(request):
         email = request.user.email
         address = request.user.userprofile.address
         zipcode = request.user.userprofile.zipcode
-        place = request.user.userprofile.place
         phone = request.user.userprofile.phone
     else:
     # If it is not authentiated set empty strings
@@ -49,8 +46,7 @@ def cart_detail(request):
     return render(request, 'cart.html', context)
 
 def success(request):
-    """
-    Cleans the cart if the order has finished
+    """Cleans the cart if the order has finished
     Return:
         -[Render] Renders the success.html
     """
