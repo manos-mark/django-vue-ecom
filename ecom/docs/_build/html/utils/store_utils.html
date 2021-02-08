@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UserProfile Views &#8212; ClickAway 1.0 documentation</title>
+    <title>Store Utils &#8212; ClickAway 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -14,8 +14,8 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Newsletter Views" href="newsletter_views.html" />
-    <link rel="prev" title="Store Views" href="store_views.html" />
+    <link rel="next" title="Order Utils" href="order_utils.html" />
+    <link rel="prev" title="Core Model" href="../models/core_models.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -32,17 +32,37 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-apps.userprofile.views">
-<span id="userprofile-views"></span><h1>UserProfile Views<a class="headerlink" href="#module-apps.userprofile.views" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-apps.store.utils">
+<span id="store-utils"></span><h1>Store Utils<a class="headerlink" href="#module-apps.store.utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="apps.userprofile.views.myaccount">
-<code class="sig-prename descclassname">apps.userprofile.views.</code><code class="sig-name descname">myaccount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.userprofile.views.myaccount" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="apps.store.utils.decrement_product_quantity">
+<code class="sig-prename descclassname">apps.store.utils.</code><code class="sig-name descname">decrement_product_quantity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.utils.decrement_product_quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrements the product’s quantity
+Params:</p>
+<blockquote>
+<div><p>-order: [Object] The specific order that have been triggered</p>
+</div></blockquote>
+</dd></dl>
 
 <dl class="py function">
-<dt id="apps.userprofile.views.signup">
-<code class="sig-prename descclassname">apps.userprofile.views.</code><code class="sig-name descname">signup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.userprofile.views.signup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="apps.store.utils.get_owned_stores">
+<code class="sig-prename descclassname">apps.store.utils.</code><code class="sig-name descname">get_owned_stores</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.utils.get_owned_stores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the user’s owned stores
+Return:</p>
+<blockquote>
+<div><p>-owned_store: [List] A list containing the user’s stores</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="apps.store.utils.send_order_confirmation">
+<code class="sig-prename descclassname">apps.store.utils.</code><code class="sig-name descname">send_order_confirmation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.store.utils.send_order_confirmation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the order’s confirmation to the customer
+Parameters:</p>
+<blockquote>
+<div><p>-order: [Dictionary] Order’s information</p>
+</div></blockquote>
+</dd></dl>
 
 </div>
 
@@ -68,14 +88,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../objects/cart_obj.html">Cart</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Views:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="cart_views.html">Cart Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="order_views.html">Order Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="store_views.html">Store Views</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">UserProfile Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="newsletter_views.html">Newsletter Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coupon_views.html">Coupon Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core_views.html">Core Views</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../views/cart_views.html">Cart Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/order_views.html">Order Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/store_views.html">Store Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/userprofile_views.html">UserProfile Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/newsletter_views.html">Newsletter Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/coupon_views.html">Coupon Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views/core_views.html">Core Views</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Models:</span></p>
 <ul>
@@ -88,17 +108,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../models/core_models.html">Core Model</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Utils:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../utils/store_utils.html">Store Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../utils/order_utils.html">Order Utils</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Store Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="order_utils.html">Order Utils</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="store_views.html" title="previous chapter">Store Views</a></li>
-      <li>Next: <a href="newsletter_views.html" title="next chapter">Newsletter Views</a></li>
+      <li>Previous: <a href="../models/core_models.html" title="previous chapter">Core Model</a></li>
+      <li>Next: <a href="order_utils.html" title="next chapter">Order Utils</a></li>
   </ul></li>
 </ul>
 </div>
@@ -132,7 +152,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/views/userprofile_views.rst.txt"
+      <a href="../_sources/utils/store_utils.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

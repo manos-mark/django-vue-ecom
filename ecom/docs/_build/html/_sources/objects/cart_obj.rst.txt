@@ -1,5 +1,5 @@
 Cart
-======
+====
 
 .. automodule:: apps.cart.cart
    :members:

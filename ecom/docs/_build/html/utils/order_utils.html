@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cart Model &#8212; ClickAway 1.0 documentation</title>
+    <title>Order Utils &#8212; ClickAway 1.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -14,8 +14,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Order Model" href="order_models.html" />
-    <link rel="prev" title="Core Views" href="../views/core_views.html" />
+    <link rel="prev" title="Store Utils" href="store_utils.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -32,8 +31,25 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-apps.cart.models">
-<span id="cart-model"></span><h1>Cart Model<a class="headerlink" href="#module-apps.cart.models" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-apps.order.utils">
+<span id="order-utils"></span><h1>Order Utils<a class="headerlink" href="#module-apps.order.utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="apps.order.utils.checkout">
+<code class="sig-prename descclassname">apps.order.utils.</code><code class="sig-name descname">checkout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">first_name</span></em>, <em class="sig-param"><span class="n">last_name</span></em>, <em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">address</span></em>, <em class="sig-param"><span class="n">zipcode</span></em>, <em class="sig-param"><span class="n">place</span></em>, <em class="sig-param"><span class="n">phone</span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.order.utils.checkout" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Params:</dt><dd><p>-first_name:[String] Customer’s first name
+-last_name:[String] Customer’s last name
+-email:[String] Customer’s E-mail
+-address:[String] Customer’s Address
+-zipcode:[String] Customer’s zipcode
+-place:[String] Customer’s place
+-phone:[String] Customer’s phone</p>
+</dd>
+<dt>Return:</dt><dd><p>-order.id : [String] The generated id from the order that just saved into the Database</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -68,27 +84,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../views/core_views.html">Core Views</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Models:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Cart Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="order_models.html">Order Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="store_models.html">Store Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userprofile_models.html">UserProfile Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="newsletter_models.html">Newsletter Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coupon_models.html">Coupon Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core_models.html">Core Model</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/cart_models.html">Cart Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/order_models.html">Order Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/store_models.html">Store Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/userprofile_models.html">UserProfile Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/newsletter_models.html">Newsletter Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/coupon_models.html">Coupon Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/core_models.html">Core Model</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Utils:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../utils/store_utils.html">Store Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../utils/order_utils.html">Order Utils</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="store_utils.html">Store Utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Order Utils</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../views/core_views.html" title="previous chapter">Core Views</a></li>
-      <li>Next: <a href="order_models.html" title="next chapter">Order Model</a></li>
+      <li>Previous: <a href="store_utils.html" title="previous chapter">Store Utils</a></li>
   </ul></li>
 </ul>
 </div>
@@ -122,7 +137,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/models/cart_models.rst.txt"
+      <a href="../_sources/utils/order_utils.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

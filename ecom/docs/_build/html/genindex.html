@@ -117,8 +117,6 @@
         <li><a href="models/coupon_models.html#module-apps.coupon.models">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     apps.coupon.views
 
@@ -126,6 +124,8 @@
         <li><a href="views/coupon_views.html#module-apps.coupon.views">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     apps.newsletter.models
 
@@ -148,6 +148,13 @@
 </li>
       </ul></li>
       <li>
+    apps.order.utils
+
+      <ul>
+        <li><a href="utils/order_utils.html#module-apps.order.utils">module</a>
+</li>
+      </ul></li>
+      <li>
     apps.order.views
 
       <ul>
@@ -159,6 +166,13 @@
 
       <ul>
         <li><a href="models/store_models.html#module-apps.store.models">module</a>
+</li>
+      </ul></li>
+      <li>
+    apps.store.utils
+
+      <ul>
+        <li><a href="utils/store_utils.html#module-apps.store.utils">module</a>
 </li>
       </ul></li>
       <li>
@@ -212,6 +226,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils/order_utils.html#apps.order.utils.checkout">checkout() (in module apps.order.utils)</a>
+</li>
       <li><a href="models/store_models.html#apps.store.models.Category.children">children (apps.store.models.Category attribute)</a>
 </li>
       <li><a href="objects/cart_obj.html#apps.cart.cart.Cart.clear">clear() (apps.cart.cart.Cart method)</a>
@@ -250,6 +266,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils/store_utils.html#apps.store.utils.decrement_product_quantity">decrement_product_quantity() (in module apps.store.utils)</a>
+</li>
       <li><a href="models/store_models.html#apps.store.models.Product.description">description (apps.store.models.Product attribute)</a>
 </li>
   </ul></td>
@@ -304,6 +322,8 @@
         <li><a href="models/store_models.html#apps.store.models.Store.get_next_by_date_added">(apps.store.models.Store method)</a>
 </li>
       </ul></li>
+      <li><a href="utils/store_utils.html#apps.store.utils.get_owned_stores">get_owned_stores() (in module apps.store.utils)</a>
+</li>
       <li><a href="models/order_models.html#apps.order.models.Order.get_previous_by_created_at">get_previous_by_created_at() (apps.order.models.Order method)</a>
 </li>
   </ul></td>
@@ -438,9 +458,13 @@
 </li>
         <li><a href="models/order_models.html#module-apps.order.models">apps.order.models</a>
 </li>
+        <li><a href="utils/order_utils.html#module-apps.order.utils">apps.order.utils</a>
+</li>
         <li><a href="views/order_views.html#module-apps.order.views">apps.order.views</a>
 </li>
         <li><a href="models/store_models.html#module-apps.store.models">apps.store.models</a>
+</li>
+        <li><a href="utils/store_utils.html#module-apps.store.utils">apps.store.utils</a>
 </li>
         <li><a href="views/store_views.html#module-apps.store.views">apps.store.views</a>
 </li>
@@ -637,6 +661,8 @@
       </ul></li>
       <li><a href="views/store_views.html#apps.store.views.search">search() (in module apps.store.views)</a>
 </li>
+      <li><a href="utils/store_utils.html#apps.store.utils.send_order_confirmation">send_order_confirmation() (in module apps.store.utils)</a>
+</li>
       <li><a href="models/order_models.html#apps.order.models.Order.SHIPPED">SHIPPED (apps.order.models.Order attribute)</a>
 </li>
       <li><a href="models/order_models.html#apps.order.models.Order.shipped_date">shipped_date (apps.order.models.Order attribute)</a>
@@ -819,6 +845,11 @@
 <li class="toctree-l1"><a class="reference internal" href="models/newsletter_models.html">Newsletter Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models/coupon_models.html">Coupon Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models/core_models.html">Core Model</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Utils:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="utils/store_utils.html">Store Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/order_utils.html">Order Utils</a></li>
 </ul>
 
 <div class="relations">

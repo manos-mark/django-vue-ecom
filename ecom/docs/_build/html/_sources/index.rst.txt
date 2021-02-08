@@ -35,6 +35,13 @@ Welcome to ClickAway documentation!
    models/coupon_models.rst
    models/core_models.rst
 
+.. toctree::
+   :maxdepth: 5
+   :caption: Utils:
+
+   utils/store_utils.rst
+   utils/order_utils.rst
+
 Indices and tables
 ==================
 
