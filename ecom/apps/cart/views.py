@@ -29,7 +29,7 @@ def cart_detail(request):
         phone = request.user.userprofile.phone
     else:
     # If it is not authentiated set empty strings
-        first_name = last_name = email = address = zipcode = place = phone = ''
+        first_name = last_name = email = address = zipcode = phone = ''
 
     context = {
         'cart': cart,
@@ -39,7 +39,7 @@ def cart_detail(request):
         'phone': phone,
         'address': address,
         'zipcode': zipcode,
-        'place': place,
+        # 'place': place,
         'pub_key': settings.STRIPE_API_KEY_PUBLISHABLE,
         'productsstring': productsstring,
     }

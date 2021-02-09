@@ -13,7 +13,6 @@ def checkout(request, first_name, last_name, email, address, zipcode, place, pho
         -email:[String] Customer's E-mail
         -address:[String] Customer's Address
         -zipcode:[String] Customer's zipcode
-        -place:[String] Customer's place
         -phone:[String] Customer's phone
     Return:
         -order.id : [String] The generated id from the order that just saved into the Database
