@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}{% endblock title %} Ecom</title>
+        <title>{% block title %}{% endblock title %} Αλφαβητάριο</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <link rel="stylesheet" href="{% static 'main.css' %}">
@@ -13,7 +13,7 @@
     <body>
         <nav class="navbar is-dark" id="navbarapp">    
             <div class="navbar-brand">
-                <a class="navbar-item" href="{% url 'frontpage' %}">Ecom</a>
+                <a class="navbar-item" href="{% url 'frontpage' %}">Αλφαβητάριο</a>
 
                 <a @click="toggleMenu()" role="button" class="navbar-burger burger" aria-label="menu" 
                         aria-expanded="false" data-target="main-navbar">
@@ -32,7 +32,7 @@
                                     <input type="text" class="input" placeholder="Search..." name="query">
                                 </div>
                                 <div class="control">
-                                    <button class="button is-success">Search</button>
+                                    <button class="button is-success">Αναζήτηση</button>
                                 </div>
                             </div>
                         </form>
@@ -60,13 +60,13 @@
 
                     {% if request.user.is_authenticated %}
                         <div class="navbar-item">
-                            <a href="{% url 'myaccount' %}" class="button is-light">My account</a>
+                            <a href="{% url 'myaccount' %}" class="button is-light">Ο λογαριασμός μου</a>
                         </div>
                     {% else %}
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a href="{% url 'signup' %}" class="button is-primary"><strong>Signup</strong></a>
-                            <a href="{% url 'login' %}" class="button is-light"><strong>Log in</strong></a>
+                            <a href="{% url 'signup' %}" class="button is-primary"><strong>Εγγραφή</strong></a>
+                            <a href="{% url 'login' %}" class="button is-light"><strong>Σύνδεση</strong></a>
                         </div>
                     </div>
                     {% endif %}
@@ -88,14 +88,14 @@
         <footer class="footer">
             <div class="columns">
                 <div class="column is-4">
-                    <h2 class="subtitle">Ecom</h2>
+                    <h2 class="subtitle">Αλφαβητάριο</h2>
                 </div>
 
                 <div class="column is-4">
-                    <a href="{% url 'contact' %}" class="navbar-item">Contact</a>
+                    <a href="{% url 'contact' %}" class="navbar-item">Επικοινωνία</a>
                 </div>
                 <div class="column is-4">
-                    <a href="{% url 'about' %}" class="navbar-item">About</a>
+                    <a href="{% url 'about' %}" class="navbar-item">Πληροφορίες</a>
                 </div>
             </div>
         </footer>

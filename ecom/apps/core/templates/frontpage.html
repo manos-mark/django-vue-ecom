@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Welcome | {% endblock title %}
+{% block title %}Αρχική | {% endblock title %}
 
 {% block content %}
     
-    {% if stores%}
+    {% comment %} {% if stores%}
         <h1 class="title has-text-centered">Shops</h1>
         {% with stores=stores owned_stores=owned_stores %}
             {% include "parts/store_list.html" %}
@@ -18,12 +18,12 @@
             {% include "parts/product_list.html" %}
         {% endwith %}
         
-    {% endif %}
+    {% endif %} {% endcomment %}
     
     {% if featured_categories %}
-        <br><hr><br>
+        {% comment %} <br><hr><br> {% endcomment %}
         <div class="featured-categories">
-            <h1 class="title has-text-centered">Featured categories</h2>
+            <h1 class="title has-text-centered">Κατηγορίες προϊόντων</h2>
             {% for category in featured_categories %}
                 <br>
                 <h2 class="subtitle has-text-centered">{{ category.title }}</h2>
@@ -36,7 +36,7 @@
     
     {% if popular_products %}
         <br><hr><br>
-        <h1 class="title has-text-centered">Popular products</h1>
+        <h1 class="title has-text-centered">Δημοφιλή προϊόντα</h1>
         {% with popular_products|slice:":4" as products %}
             {% include "parts/product_list.html" %}
         {% endwith %}
@@ -44,7 +44,7 @@
 
     {% if recently_viewed_products %}
         <br><hr><br>
-        <h1 class="title has-text-centered">Recently viewed products</h1>
+        <h1 class="title has-text-centered">Πρόσφατα</h1>
         {% with recently_viewed_products|slice:":4" as products %}
             {% include "parts/product_list.html" %}
         {% endwith %}
